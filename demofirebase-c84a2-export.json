@@ -1,0 +1,274 @@
+{
+  "users" : {
+    "5465488c-3d5c-4ac1-9d78-6e846244a528" : {
+      "password" : "123",
+      "username" : "admin",
+      "role": "administrator"
+    },
+    "19237559-abd1-4cd8-b510-658b239ddee5" : {
+      "password" : "123",
+      "username" : "ly.doan",
+      "role": "customer"
+    },
+    "476df5b5-60af-44f6-88f1-35c7d8e74286" : {
+      "password" : "123",
+      "username" : "lyly",
+      "role": "customer"
+    },
+    "-LjVLQrJnbhWZ4FV2sA6" : {
+      "password" : "123",
+      "username" : "mai.nguyen",
+      "role": "customer"
+    },
+    "-LjVMVuNzxWvWKw9Gsl3" : {
+      "password" : "123",
+      "username" : "lulu",
+      "role": "customer"
+    },
+    "-LjVMn2Ec6MJCd8jYxb9" : {
+      "password" : "123",
+      "username" : "minmin",
+      "role": "customer"
+    }
+  },
+  "customers":{
+    "52a131f1-68c4-4607-bf14-51ecc3031c5c" : {
+      "name" : "trang.nguyen",
+      "birthday" : "1999-11-22",
+      "phonenumber": "01344655754",
+      "address" : "Quảng Nam"
+    },
+    "27f4e626-08a3-480f-9cca-64418dea8d66" : {
+      "name" : "ly.doan",
+      "birthday" : "1999-11-22",
+      "phonenumber": "012312454",
+      "address" : "Quảng Bình"
+    },
+    "66edc881-9abf-40e0-b168-bc5514fdfc5c" : {
+      "name" : "duy.nguyen",
+      "birthday" : "1999-11-22",
+      "phonenumber": "034514522",
+      "address" : "Quảng Trị"
+    },
+    "d56f4753-4613-464b-90d5-853f86c2c25a" : {
+      "name" : "anh.minh",
+      "birthday" : "1999-11-22",
+      "phonenumber": "012345622",
+      "address" : "Kon Tum"
+    },
+    "9fd5b84f-76a2-47e1-9a09-4b481742dc83" : {
+      "name" : "han.nguyen",
+      "birthday" : "1999-11-22",
+      "phonenumber": "0334778516",
+      "address" : "Quảng Nam"
+    },
+    "2c8cd45b-a1cd-4b19-82bb-b83812102c6d" : {
+      "name" : "thuy.tran",
+      "birthday" : "1999-11-22",
+      "phonenumber": "0415445454",
+      "address" : ""
+    },
+    "ac7d312c-feae-448e-96a6-6c761712abc3" : {
+      "name" : "hoa.quynh",
+      "birthday" : "1999-11-22",
+      "phonenumber": "0134556845",
+      "address" : "Bình Định"
+    },
+    "d91e0d04-23a5-4e6d-a53c-631ccfbcca87" : {
+      "name" : "tan.hoang",
+      "birthday" : "1999-11-22",
+      "phonenumber": "01634778516",
+      "address" : "Kon Tum"
+    },
+    "d4ad4140-72e2-4dcc-95fe-dc489ed8c145" : {
+      "name" : "chang.minh",
+      "birthday" : "1999-11-22",
+      "phonenumber": "01634778516",
+      "address" : "Bình Thuận"
+    },
+    "b23a268e-5aea-480c-b87b-5d6293a6d72e" : {
+      "name" : " hoang.vu",
+      "birthday" : "1999-11-22",
+      "phonenumber": "0163477515",
+      "address" : "Khánh Hòa"
+    }
+  },
+  "employees":{
+    "538ddf7b-05fc-4573-a48a-c14d6ca2169c" : {
+      "name" : "Nguyễn Thị Thu",
+      "id_card" : "20190101",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"thunguyen@gmail.com",
+      "salary":"7000000"
+    },
+    "876a8d09-8f33-4416-ae44-927951b95671" : {
+      "name" : "Nguyễn Phương Tri",
+      "id_card" : "20190102",
+      "address" : "13-Nguyễn Văn Thoại-Hà Nội",
+      "email":"tringuyen@gmail.com",
+      "salary":"7000000"
+    },
+    "91e99815-43b6-47c1-8796-96148f2f66d1" : {
+      "name" : "Nguyễn Ngọc Bảo Hân",
+      "id_card" : "20190103",
+      "address" : "13-Nguyễn Văn Thoại-Đà Nẵng",
+      "email":"han.nguyen@gmail.com",
+      "salary":"7000000"
+    },
+    "ffb19514-7a34-4f8f-a089-108f7414d1e6" : {
+      "name" : "Nguyễn Ngọc Duy",
+     "id_card" : "20190104",
+      "address" : "04-Nguyễn Công Trứ-Hải Phòng",
+      "email":"duy.nguyen@gmail.com",
+      "salary":"7000000"
+    },
+    "87f1995f-6e65-4c92-b7ad-ada5abc91277" : {
+      "name" : "hoang.anh",
+     "id_card" : "20190105",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"hoanganh@gmail.com",
+      "salary":"7000000"
+    },
+    "92f9a766-adb7-416f-ba3a-becff7aa0873" : {
+      "name" : "nguyen.hoa",
+     "id_card" : "20190106",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"nguyenhoa@gmail.com",
+      "salary":"7000000"
+    },
+    "2c396644-6e71-49a4-8b25-1eee6b250d63" : {
+      "name" : "trung.mai",
+     "id_card" : "20190107",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"trungmai@gmail.com",
+      "salary":"7000000"
+    },
+    "047f2a2f-aa3d-46b3-9de1-b22b509319e1" : {
+      "name" : "linh.duy",
+     "id_card" : "20190108",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"duylinh@gmail.com",
+      "salary":"7000000"
+    },
+    "ba6d3214-ccfd-4cf9-9d30-af9daead27dd" : {
+      "name" : "quoc.hoang",
+     "id_card" : "20190109",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"thunguyen@gmail.com",
+      "salary":"7000000"
+    },
+    "5b5716e1-b44d-478b-9ad5-6278ba84c2a2" : {
+      "name" : "anh.tam",
+     "id_card" : "20190110",
+      "address" : "04-Nguyễn Công Trứ-Hà Nội",
+      "email":"tamanh@gmail.com",
+      "salary":"7000000"
+    }
+  },
+  "categories":{
+    "16fb27d2-7afa-4a83-8fac-a51adeacd472":{
+    "cate_name": "Túi & Clutch"
+    },
+    "8500a301-1c33-4ee3-a61d-278cd1026a59":{
+      "cate_name":"'Ví da"
+    },
+    "6df5cb5a-dd96-4b50-925e-8c698385dcef":{
+      "cate_name":"Phụ kiện"
+    }
+  },
+  "products":{
+    "669fc649-0cdf-4881-a493-cd6014329603":{
+      "name":"CLUTCH HỘP",
+      "image":"https://salt.tikicdn.com/cache/w1200/ts/product/81/9f/fd/9ffafab9e2be8cdaca7c100cfdf4422c.jpg",
+      "price_in":"1500000",
+      "price_out":"2000000",
+      "quantity":"12",
+      "description":"Đây là phiển bản cải tiến của mẫu Clutch cũ, với phiên bản mới này bạn có thể đựng được rất nhiều vận dụng chỉ trong một chiếc túi da nhỏ gọn",
+      "price_promotion":"0",
+      "status":"1",
+      "cate_id":"16fb27d2-7afa-4a83-8fac-a51adeacd472",
+      "date_add":"2019-02-03",
+      "delete_at":"2019-07-03"
+    },
+    "6dd56d48-5248-47df-b20f-9b5bc183bc10":{
+      "name":"BAO DA ĐỰNG GIẤY ĐĂNG KIỂM XE",
+      "image":"http://www.dabothuoc.com/wp-content/uploads/2015/08/v05-a.jpg",
+      "price_in":"1200000",
+      "price_out":"1800000",
+      "quantity":"5",
+      "description":"Sử dụng chất liệu da bò cao cấp, bề mặt mềm mại, được xử lý cẩn thận càng bóng mịn theo thời gian sử dụng. Sản phẩm được may thủ cộng tỉ mỉ và tinh xảo",
+      "price_promotion":"1600000",
+      "status":"1",
+      "cate_id":"8500a301-1c33-4ee3-a61d-278cd1026a59",
+      "date_add":"2019-02-03",
+      "delete_at":"1999-11-22"
+    },
+    "f441f3f4-cbda-41d0-809f-0a618ed3a52a":{
+      "name":"BAO DA IPHONE",
+      "image":"https://lydoan-pn.000webhostapp.com/Image/Product/BAO-DA-IPHONE-1.png",
+      "price_in":"259000",
+      "price_out":"300000",
+      "quantity":"5",
+      "description":"Bao đẹp, bao rẻ",
+      "price_promotion":"0",
+      "status":"1",
+      "cate_id":"6df5cb5a-dd96-4b50-925e-8c698385dcef",
+      "date_add":"2019-02-03",
+      "delete_at":"2019-07-03"
+    },
+    "3a702585-f9bb-4c8c-9798-3b089500b0f0":{
+      "name":"BAO DA MACBOOK COOL",
+      "image":"https://lydoan-pn.000webhostapp.com/Image/Product/BAO-DA-MACBOOK-LEO-1.png",
+      "price_in":"2500000",
+      "price_out":"4500000",
+      "quantity":"5",
+      "description":"Chất liệu da bò thật 100%  Bên trong lót 1 lớp nhung mềm   Nắp có gắn nam châm hít chắc chắn  Có đủ loại cho các dòng MACBOOK 11, 12, 13 & 15 inch.  3 màu: Đen / Vàng bò / Xanh dương",
+      "price_promotion":"4000000",
+      "status":"1",
+      "cate_id":"6df5cb5a-dd96-4b50-925e-8c698385dcef",
+      "date_add":"2019-02-03",
+      "delete_at":"2019-07-03"
+    },
+    "57d6a7bb-19bd-44b2-9918-7853455c30c9":{
+      "name":"CLUTCH BOSSED",
+      "image":"https://lydoan-pn.000webhostapp.com/Image/Product/CLUTCH-BOSSED-1.png",
+      "price_in":"1200000",
+      "price_out":"1500000",
+      "quantity":"5",
+      "description":"Hãy thử tưởng tượng tất cả các vận dụng: Ipad, điện thoại, bút, sạc đa năng, thẻ ATM, tiền mặt... đều có thể bỏ gọn gàng trong chiếc CLUTCH này, quá tiện phải không nào? Chất liệu: Da bò thật 100%",
+      "price_promotion":"0",
+      "status":"1",
+      "cate_id":"16fb27d2-7afa-4a83-8fac-a51adeacd472",
+      "date_add":"2019-02-03",
+      "delete_at":"2019-07-03"
+    }
+  },
+  "orders":{
+    "873bd873-f01d-476b-98c2-21b0bfdd24a4":{
+      "name_cus":"hoang.anh",
+      "emp_id":"538ddf7b-05fc-4573-a48a-c14d6ca2169c",
+      "product":{"id": "669fc649-0cdf-4881-a493-cd6014329603", "quantity": "1"},
+      "order_date":"2019-01-14",
+      "amount":"1460000",
+      "status":"1"
+    },
+    "8601baaf-b3f3-46dd-b977-e529aded1873":{
+      "name_cus":"nguyen.hoang",
+      "emp_id":"538ddf7b-05fc-4573-a48a-c14d6ca2169c",
+      "product":{"id": "f441f3f4-cbda-41d0-809f-0a618ed3a52a", "quantity": "1"},
+      "order_date":"2019-01-11",
+      "amount":"1460000",
+      "status":"1"
+    },
+    "6a72d74b-a1ab-47eb-bf53-14ceddc38090":{
+      "id_cus":"d4ad4140-72e2-4dcc-95fe-dc489ed8c145",
+      "emp_id":"538ddf7b-05fc-4573-a48a-c14d6ca2169c",
+      "product":{"id": "57d6a7bb-19bd-44b2-9918-7853455c30c9", "quantity": "1"},
+      "order_date":"2019-01-20",
+      "amount":"1460000",
+      "status":"1"
+    }
+  }
+}
+
+

@@ -31,7 +31,7 @@ class AppBase extends React.Component {
         return this.props.firebase.users(uid);
       }
       case "customers": {
-        return this.props.firebase.users(uid);
+        return this.props.firebase.customers(uid);
       }
       case "employees": {
         return this.props.firebase.employees(uid);
