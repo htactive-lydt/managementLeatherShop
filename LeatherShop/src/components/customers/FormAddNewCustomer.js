@@ -8,7 +8,8 @@ export default class FormAddNewCustomer extends Component {
       birthday: "",
       phoneNumber: "",
       address: ""
-    }
+    },
+    errors: []
   };
 
   handleOpenForm = () => {
@@ -17,18 +18,51 @@ export default class FormAddNewCustomer extends Component {
     }));
   };
 
+  closeError = () => {
+    console.log("Ly");
+    this.setState({
+      errors: []
+    });
+  };
+
+  checkValid = () => {
+    const { name, birthday, address, phoneNumber } = this.state.newCustomer;
+    let errors = [];
+    if (!name) {
+      errors.push("Customer's name is required!");
+    }
+    if (!birthday) {
+      errors.push("Customer's birthday is required!");
+    }
+    if (!address) {
+      errors.push("Customer's address is required!");
+    }
+    if (!phoneNumber) {
+      errors.push("Customer's phone number is required!");
+    }
+    if (errors.length > 0) {
+      this.setState({
+        errors
+      });
+      return 0;
+    }
+    return 1;
+  };
+
   addNewCustomer = event => {
     event.preventDefault();
-    this.props.addNew("customers", this.state.newCustomer);
-    this.setState({
-      isOpenForm: false,
-      newCustomer: {
-        name: "",
-        birthday: "",
-        phoneNumber: "",
-        address: ""
-      }
-    });
+    if (this.checkValid()) {
+      this.props.addNew("customers", this.state.newCustomer);
+      this.setState({
+        isOpenForm: false,
+        newCustomer: {
+          name: "",
+          birthday: "",
+          phoneNumber: "",
+          address: ""
+        }
+      });
+    }
   };
 
   handleChange = event => {
@@ -45,7 +79,7 @@ export default class FormAddNewCustomer extends Component {
   };
 
   render() {
-    const { isOpenForm } = this.state;
+    const { isOpenForm, errors } = this.state;
     return (
       <div>
         <form>
@@ -61,6 +95,23 @@ export default class FormAddNewCustomer extends Component {
             </div>
             {isOpenForm ? (
               <div className="panel-body row" id="form-add">
+                {errors.length > 0 ? (
+                  <>
+                    <div className="col-md-1" />
+                    <div className="alert alert-danger col-md-10">
+                      <a className="close" onClick={this.closeError}>
+                        ×
+                      </a>
+                      <ul>
+                        {errors.map((item, index) => (
+                          <li key={index}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
                 <div className="form-group col-md-6">
                   <input
                     type="text"
