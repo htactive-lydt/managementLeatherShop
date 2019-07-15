@@ -20,14 +20,14 @@ export default class FormAddNewCustomer extends Component {
   addNewCustomer = event => {
     event.preventDefault();
     const {name, birthday, phoneNumber, address} = this.state.newCustomer;
-    // this.props.addNewTask(newTask);
+    this.props.addNew("customers", this.state.newCustomer);
     this.setState({
       isOpenForm: false,
       newCustomer: {
-        name: "",
-        birthday: "",
-        phoneNumber: "",
-        address: ""
+        name,
+        birthday,
+        phoneNumber,
+        address
       }
     });
   };
@@ -47,7 +47,7 @@ export default class FormAddNewCustomer extends Component {
         <form>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <button type="button" className="btn btn-success" onClick={this.handleOpenForm}>
+              <button type="button" className="btn" onClick={this.handleOpenForm}>
                 {isOpenForm ? "CANCEL" : "ADD NEW"}
               </button>
             </div>
@@ -89,7 +89,7 @@ export default class FormAddNewCustomer extends Component {
                   />
                 </div>
                 <div className="form-group col-md-1">
-                  <button type="button" className="btn btn-primary" onClick={this.addNewTask}>
+                  <button type="button" className="btn" onClick={this.addNewCustomer}>
                     ADD
                   </button>
                 </div>

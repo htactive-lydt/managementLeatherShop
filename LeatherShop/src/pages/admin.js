@@ -11,7 +11,7 @@ const AdminPage = () => {
   );
 };
 
-class FormAddUserBase extends Component {
+export class FormAddUserBase extends Component {
   constructor(props) {
     super(props);
 

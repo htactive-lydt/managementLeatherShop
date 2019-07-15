@@ -42,6 +42,15 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.btn{
+  background-color: #009688;
+  color: #fff;
+}
+
+.btn:hover{
+  color: #fff;
+}
+
 *,
 *::before,
 *::after {

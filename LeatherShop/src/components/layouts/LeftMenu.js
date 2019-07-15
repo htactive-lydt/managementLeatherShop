@@ -82,7 +82,7 @@ const LeftMenu = () => {
         <img
           className="app-sidebar__user-avatar"
           src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"
-          alt="User Image"
+          alt="User"
         />
         <div>
           <p className="app-sidebar__user-name">Trang Ly</p>

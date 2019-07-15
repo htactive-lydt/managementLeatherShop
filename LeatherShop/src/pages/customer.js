@@ -1,16 +1,18 @@
 import React from "react";
 import LeftMenu from "../components/layouts/LeftMenu";
 import Header from "../components/layouts/Header";
-import FormAddNewCustomer from "../components/customers/FormAddNewCustomer";
+import {FormAddNewCustomer, CustomerList} from "../components/customers";
 
-const Customers = () => {
+const Customers = (props) => {
+  const {addNew, update, getTableCall} = props;
   return (
     <>
       <Header />
       <LeftMenu />
       <main className="app-content">
         <div className="container">
-          <FormAddNewCustomer />
+          <FormAddNewCustomer getTableCall={getTableCall} addNew={addNew} update={update}/>
+          <CustomerList />
         </div>
       </main>
     </>
