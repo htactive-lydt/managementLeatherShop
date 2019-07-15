@@ -16,6 +16,7 @@ class FormAddNewCategories extends React.Component {
   addNewCategory = event => {
     event.preventDefault();
     const {name} = this.state.newCategory;
+    //console.log(this.state.newCategory)
     this.props.addNew("categories", this.state.newCategory);
     this.setState({
       isOpenForm: false,
@@ -26,11 +27,13 @@ class FormAddNewCategories extends React.Component {
   };
 
   handleChange = event => {
-    const name = event.target.name;
     const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
+    this.setState((prevState) => ({
+      ...prevState,
+      newCategory: {
+        name:value
+      }
+    }));
   };
 
   render() {
@@ -53,7 +56,7 @@ class FormAddNewCategories extends React.Component {
                 <div className="form-group col-md-6">
                   <input
                     type="text"
-                    placeholder="Enter customer's name"
+                    placeholder="Enter category's name"
                     className="form-control"
                     onChange={this.handleChange}
                     required

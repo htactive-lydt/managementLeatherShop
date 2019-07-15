@@ -136,7 +136,7 @@ class AppBase extends React.Component {
           <Route
             path="/products"
             component={() => (
-              <Products products={products} addNew={this.addNew} update={this.update} />
+              <Products products={products} categories={categories} addNew={this.addNew} update={this.update} />
             )}
           />
           <Route
