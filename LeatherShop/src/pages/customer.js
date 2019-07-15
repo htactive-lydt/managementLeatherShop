@@ -4,7 +4,7 @@ import Header from "../components/layouts/Header";
 import {FormAddNewCustomer, CustomerList} from "../components/customers";
 
 const Customers = (props) => {
-  const {addNew, update, getTableCall} = props;
+  const {addNew, update, getTableCall, customers} = props;
   return (
     <>
       <Header />
@@ -12,7 +12,7 @@ const Customers = (props) => {
       <main className="app-content">
         <div className="container">
           <FormAddNewCustomer getTableCall={getTableCall} addNew={addNew} update={update}/>
-          <CustomerList />
+          <CustomerList customers={customers}/>
         </div>
       </main>
     </>

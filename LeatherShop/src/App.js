@@ -31,7 +31,7 @@ class AppBase extends React.Component {
         return this.props.firebase.users(uid);
       }
       case "customers": {
-        return this.props.firebase.users(uid);
+        return this.props.firebase.customers(uid);
       }
       case "employees": {
         return this.props.firebase.employees(uid);
@@ -51,7 +51,7 @@ class AppBase extends React.Component {
     }
   }
 
-  getData(table) {
+  getData = (table) => {
     let tableCall = this.getTableCall(table);
     tableCall.on("value", snapshot => {
       const object = snapshot.val();
@@ -71,14 +71,14 @@ class AppBase extends React.Component {
     });
   }
 
-  addNew(table, rowNew) {
+  addNew = (table, rowNew) => {
     let tableCall = this.getTableCall(table);
 
     tableCall.push(rowNew);
     this.getData(table);
   }
 
-  update(table, rowUpdate) {
+  update = (table, rowUpdate) => {
     const { uid, ...rowUpdateSnapshot } = rowUpdate;
     let tableCall = this.getTableCall(table, uid);
 
@@ -118,7 +118,7 @@ class AppBase extends React.Component {
           <Route
             path="/customers"
             component={() => (
-              <Customers getTableCall={this.getTableCall} customers={customers} addNew={this.addNew} update={this.update} />
+              <Customers customers={customers} addNew={this.addNew} update={this.update} />
             )}
           />
           <Route
