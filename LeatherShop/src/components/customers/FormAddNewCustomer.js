@@ -19,16 +19,14 @@ export default class FormAddNewCustomer extends Component {
 
   addNewCustomer = event => {
     event.preventDefault();
-    const { name, birthday, phoneNumber, address } = this.state.newCustomer;
-    console.log("new cus: ", this.state.newCustomer);
     this.props.addNew("customers", this.state.newCustomer);
     this.setState({
       isOpenForm: false,
       newCustomer: {
-        name,
-        birthday,
-        phoneNumber,
-        address
+        name: "",
+        birthday: "",
+        phoneNumber: "",
+        address: ""
       }
     });
   };
@@ -37,7 +35,7 @@ export default class FormAddNewCustomer extends Component {
     const name = event.target.name;
     const value = event.target.value;
 
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       ...prevState,
       newCustomer: {
         ...prevState.newCustomer,
@@ -55,7 +53,7 @@ export default class FormAddNewCustomer extends Component {
             <div className="panel-heading">
               <button
                 type="button"
-                className="btn"
+                className="btn btn-form"
                 onClick={this.handleOpenForm}
               >
                 {isOpenForm ? "CANCEL" : "ADD NEW"}
@@ -105,7 +103,7 @@ export default class FormAddNewCustomer extends Component {
                 <div className="form-group col-md-1">
                   <button
                     type="button"
-                    className="btn"
+                    className="btn btn-form"
                     onClick={this.addNewCustomer}
                   >
                     ADD

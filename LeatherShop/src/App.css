@@ -42,12 +42,12 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.btn{
+.btn-form{
   background-color: #009688;
   color: #fff;
 }
 
-.btn:hover{
+.btn-form:hover{
   color: #fff;
 }
 
@@ -961,13 +961,13 @@ mark,
 }
 
 .panel-primary {
-  border-color: #337ab7;
+  border-color: #009688;
 }
 
 .panel-primary>.panel-heading {
   color: #fff;
-  background-color: #337ab7;
-  border-color: #337ab7;
+  background-color: #009688;
+  border-color: #009688;
 }
 
 .complete{
@@ -981,4 +981,10 @@ mark,
 .combobox{
   margin-bottom: 20px;
   margin-top: 20px;
+}
+
+.disable{
+  border: none;
+  background-color: #fff;
+  pointer-events:none;
 }

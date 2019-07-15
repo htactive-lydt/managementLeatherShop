@@ -3,10 +3,11 @@ import CustomerListItem from "./CustomerListItem";
 
 export default function CustomerList(props) {
   const { deleteItem, update, customers } = props;
-  let listItems = customers.map(item => (
+  let listItems = customers.map((item, index) => (
     <CustomerListItem
       key={item.id}
       item={item}
+      index={index}
       deleteItem={deleteItem}
       update={update}
     />
@@ -26,6 +27,7 @@ export default function CustomerList(props) {
                 <th>BIRTHDAY</th>
                 <th>ADDRESS</th>
                 <th>PHONE NUMBER</th>
+                <th>CONTROL</th>
               </tr>
             </thead>
             <tbody id="studentList">
