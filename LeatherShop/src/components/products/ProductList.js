@@ -23,10 +23,10 @@ export default function ProductList(props) {
             <thead className="thead-light">
               <tr>
                 <th>CATE ID</th>
+                <th>NAME PRODUCT</th>
+                <th>IMAGE</th>
                 <th>DATE ADD</th>
                 <th>DELETE AT</th>
-                <th>IMAGE</th>
-                <th>NAME PRODUCT</th>
                 <th>PRICE IN</th>
                 <th>PRICE OUT</th>
                 <th>PRICE PROMOTION</th>

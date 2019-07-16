@@ -4,40 +4,61 @@ class FormAddNewCategories extends React.Component {
   state = {
     isOpenForm: false,
     newCategory: {
-      name: ""
-    }
+      cateName: ""
+    },
+    errors: []
   };
   handleOpenForm = () => {
     this.setState(prevState => ({
       isOpenForm: !prevState.isOpenForm
     }));
   };
+  checkValidate = () => {
+    const { cateName } = this.state.newCategory;
+    let errors = [];
+    if (!cateName) {
+      errors.push("Category's name is required!");
+    }
+    if (errors.length > 0) {
+      this.setState({
+        errors
+      });
+      return 0;
+    }
+    return 1;
+  };
 
   addNewCategory = event => {
     event.preventDefault();
-    const {name} = this.state.newCategory;
-    //console.log(this.state.newCategory)
-    this.props.addNew("categories", this.state.newCategory);
-    this.setState({
-      isOpenForm: false,
-      newCategory: {
-        name
-      }
-    });
+    if (this.checkValidate()) {
+      this.props.addNew("categories", this.state.newCategory);
+      this.setState({
+        isOpenForm: false,
+        newCategory: {
+          cateName: ""
+        }
+      });
+    }
   };
 
   handleChange = event => {
     const value = event.target.value;
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       ...prevState,
       newCategory: {
-        name:value
+        cateName: value
       }
     }));
   };
 
+  closeError = () => {
+    this.setState({
+      errors: []
+    });
+  };
+
   render() {
-    const { isOpenForm } = this.state;
+    const { isOpenForm, errors } = this.state;
     return (
       <div>
         <form>
@@ -53,6 +74,23 @@ class FormAddNewCategories extends React.Component {
             </div>
             {isOpenForm ? (
               <div className="panel-body row" id="form-add">
+                {errors.length > 0 ? (
+                  <>
+                    <div className="col-md-1" />
+                    <div className="alert alert-danger col-md-10">
+                      <a className="close" onClick={this.closeError}>
+                        ×
+                      </a>
+                      <ul>
+                        {errors.map((item, index) => (
+                          <li key={index}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
                 <div className="form-group col-md-6">
                   <input
                     type="text"

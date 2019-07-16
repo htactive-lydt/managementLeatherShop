@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withFirebase } from "../Firebase/context";
 
 export default class FormAddProduct extends Component {
   state = {
@@ -13,8 +14,11 @@ export default class FormAddProduct extends Component {
       priceIn: "",
       priceOut: "",
       pricePromotion: "",
-      quantity: ""
-    }
+      quantity: "",
+      url: "",
+      progress: 0
+    },
+    errors: []
   };
 
   handleOpenForm = () => {
@@ -23,18 +27,54 @@ export default class FormAddProduct extends Component {
     }));
   };
 
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      this.setState(
+        {image}
+      );
+    }
+  };
+
   addNewProduct = event => {
+    const { image } = this.state;
+    console.log(image,"image")
+    const uploadTask = this.props.firebase.storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      error => {
+        console.log(error);
+      },
+      () => {
+        this.props.firebase.storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            console.log("url", url);
+            this.setState({ url });
+          });
+      }
+    );
     event.preventDefault();
-    console.log("new product: ", this.state.newProduct);
-    this.props.addNew("products", this.state.newProduct);
+   
+      this.props.addNew("products", this.state.newProduct);
+      this.setState({
+        isOpenForm: false
+      });
+    
+  };
+  closeError = () => {
     this.setState({
-      isOpenForm: false
+      errors: []
     });
   };
 
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
+    console.log(value);
+    console.log(name);
 
     this.setState(prevState => ({
       ...prevState,
@@ -45,8 +85,51 @@ export default class FormAddProduct extends Component {
     }));
   };
 
+  checkValidate = () => {
+    const {
+      cateID,
+      dateAdd,
+      description,
+      image,
+      name,
+      priceIn,
+      priceOut,
+      pricePromotion,
+      quantity
+    } = this.state;
+    let errors = [];
+    if (!cateID) {
+      errors.push("Category's name is required");
+    }
+    if (!dateAdd) {
+      errors.push("Date add product is required");
+    }
+    if (!description) {
+      errors.push("Product's description is required");
+    }
+    if (!priceIn) {
+      errors.push("Product's price in is required");
+    }
+    if (!priceOut) {
+      errors.push("Product's price out is required");
+    }
+    if (!pricePromotion) {
+      errors.push("Product's price promotion is required");
+    }
+    if (!quantity) {
+      errors.push("Product's quantity is required");
+    }
+    if (errors.length > 0) {
+      this.setState({
+        errors
+      });
+      return 0;
+    }
+    return 1;
+  };
+
   render() {
-    const { isOpenForm } = this.state;
+    const { isOpenForm, errors } = this.state;
     const { categories } = this.props;
 
     return (
@@ -64,6 +147,23 @@ export default class FormAddProduct extends Component {
             </div>
             {isOpenForm ? (
               <div className="panel-body row" id="form-add">
+                {errors.length > 0 ? (
+                  <>
+                    <div className="col-md-1" />
+                    <div className="alert alert-danger col-md-10">
+                      <a className="close" onClick={this.closeError}>
+                        ×
+                      </a>
+                      <ul>
+                        {errors.map((item, index) => (
+                          <li key={index}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
                 <div className="form-group col-md-6">
                   <label>Product's name</label>
                   <input
@@ -98,12 +198,13 @@ export default class FormAddProduct extends Component {
                 </div>
                 <div className="form-group col-md-6">
                   <label>Product's image</label>
+                  <progress value={this.state.progress} max="100" />
                   <input
                     name="image"
                     type="file"
                     placeholder="Please choose a product's image"
                     className="form-control"
-                    onChange={this.handleChange}
+                    onChange={this.handleChangeImage}
                     required
                   />
                 </div>
@@ -130,7 +231,7 @@ export default class FormAddProduct extends Component {
                   />
                 </div>
                 <div className="form-group col-md-6">
-                <label>Product's Price Promotion</label>
+                  <label>Product's Price Promotion</label>
                   <input
                     name="pricePromotion"
                     type="text"
@@ -141,28 +242,22 @@ export default class FormAddProduct extends Component {
                   />
                 </div>
                 <div className="form-group col-md-6">
-                <label>Product's Category</label>
-                  <select className="form-control" onChange={this.handleChange}>
+                  <label>Product's Category</label>
+                  <select
+                    className="form-control"
+                    onChange={this.handleChange}
+                    name="cateID"
+                  >
                     {categories.map((item, index) => (
-                      <option key={index} value="item.id">
+                      <option key={index} value={item.id}>
                         {item.cateName}
                       </option>
                     ))}
                   </select>
                 </div>
+
                 <div className="form-group col-md-6">
-                <label>Product's Delete At</label>
-                  <input
-                    name="dateAt"
-                    type="date"
-                    placeholder="Enter customer's address"
-                    className="form-control"
-                    onChange={this.handleChange}
-                    required
-                  />
-                </div>
-                <div className="form-group col-md-6">
-                <label>Product's quantity</label>
+                  <label>Product's quantity</label>
                   <input
                     name="quantity"
                     type="number"

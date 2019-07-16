@@ -5,7 +5,7 @@ import FormAddNewCategories from "../components/categories/FormAddNewCategories"
 import CategoryList from "../components/categories/CategoryList";
 
 const Categories = (props) => {
-  const { addNew, update, categories} = props;
+  const { addNew, update, categories, deleteItem} = props;
   return (
     <>
       <Header />
@@ -13,7 +13,7 @@ const Categories = (props) => {
       <main className="app-content">
         <div className="container">
           <FormAddNewCategories addNew={addNew} update={update} />
-          <CategoryList categories={categories} />
+          <CategoryList categories={categories} update={update} deleteItem = {deleteItem} />
         </div>
       </main>
     </>

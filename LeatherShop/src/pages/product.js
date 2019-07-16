@@ -5,20 +5,23 @@ import FormAddNewProduct from "../components/products/FormAddProduct";
 import ProductList from "../components/products/ProductList";
 
 const Products = props => {
-  const { addNew, update, categories, products } = props;
+  const { addNew, update, categories, products, deleteItem } = props;
   return (
     <>
       <Header />
       <LeftMenu />
       <main className="app-content">
-        <div className="container">
-          <FormAddNewProduct
-            addNew={addNew}
-            update={update}
-            categories={categories}
-          />
-          <ProductList products={products} categories={categories} />
-        </div>
+        <FormAddNewProduct
+          addNew={addNew}
+          update={update}
+          categories={categories}
+        />
+        <ProductList
+          products={products}
+          categories={categories}
+          update={update}
+          deleteItem={deleteItem}
+        />
       </main>
     </>
   );

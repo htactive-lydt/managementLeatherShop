@@ -982,3 +982,9 @@ mark,
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
+.disable{
+  border: none;
+  background-color: #fff;
+  pointer-events:none;
+}

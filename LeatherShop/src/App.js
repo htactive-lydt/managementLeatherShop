@@ -51,7 +51,33 @@ class AppBase extends React.Component {
     }
   }
 
-  getData = (table) => {
+  getTableCallUpdate = (table, id) => {
+    switch (table) {
+      case "users": {
+        return this.props.firebase.updateUsers(id);
+      }
+      case "customers": {
+        return this.props.firebase.updateCustomers(id);
+      }
+      case "employees": {
+        return this.props.firebase.updateEmployees(id);
+      }
+      case "categories": {
+        return this.props.firebase.updateCategories(id);
+      }
+      case "products": {
+        return this.props.firebase.updateProducts(id);
+      }
+      case "orders": {
+        return this.props.firebase.updateOrders(id);
+      }
+      default: {
+        return "ly";
+      }
+    }
+  };
+
+  getData = table => {
     let tableCall = this.getTableCall(table);
     tableCall.on("value", snapshot => {
       const object = snapshot.val();
@@ -69,22 +95,25 @@ class AppBase extends React.Component {
         });
       }
     });
-  }
+  };
 
   addNew = (table, rowNew) => {
     let tableCall = this.getTableCall(table);
-
     tableCall.push(rowNew);
     this.getData(table);
-  }
+  };
 
   update = (table, rowUpdate) => {
-    const { uid, ...rowUpdateSnapshot } = rowUpdate;
-    let tableCall = this.getTableCall(table, uid);
+    const { id, ...rowUpdateSnapshot } = rowUpdate;
+    console.log("update coi nào",rowUpdate)
+    let tableCall = this.getTableCallUpdate(table, id);
+    tableCall.set(rowUpdateSnapshot);
+  };
 
-    tableCall.set(...rowUpdateSnapshot);
-    this.getData(table);
-  }
+  deleteItem = (table, id) => {
+    let tableCall = this.getTableCallUpdate(table, id);
+    tableCall.remove();
+  };
 
   componentDidMount() {
     this.getData("users");
@@ -104,7 +133,7 @@ class AppBase extends React.Component {
       products,
       orders
     } = this.state;
-    console.log(this.state)
+    console.log(this.state);
     return (
       <Router>
         <Switch>
@@ -118,31 +147,54 @@ class AppBase extends React.Component {
           <Route
             path="/customers"
             component={() => (
-              <Customers customers={customers} addNew={this.addNew} update={this.update} />
+              <Customers
+                customers={customers}
+                addNew={this.addNew}
+                update={this.update}
+              />
             )}
           />
           <Route
             path="/employees"
             component={() => (
-              <Employees employees={employees} addNew={this.addNew} update={this.update} />
+              <Employees
+                employees={employees}
+                addNew={this.addNew}
+                update={this.update}
+              />
             )}
           />
           <Route
             path="/categories"
             component={() => (
-              <Categories categories={categories} addNew={this.addNew} update={this.update} />
+              <Categories
+                categories={categories}
+                addNew={this.addNew}
+                update={this.update}
+                deleteItem={this.deleteItem}
+              />
             )}
           />
           <Route
             path="/products"
             component={() => (
-              <Products products={products} categories={categories} addNew={this.addNew} update={this.update} />
+              <Products
+                products={products}
+                categories={categories}
+                addNew={this.addNew}
+                update={this.update}
+                deleteItem={this.deleteItem}
+              />
             )}
           />
           <Route
             path="/orders"
             component={() => (
-              <Orders orders={orders} addNew={this.addNew} update={this.update} />
+              <Orders
+                orders={orders}
+                addNew={this.addNew}
+                update={this.update}
+              />
             )}
           />
         </Switch>
