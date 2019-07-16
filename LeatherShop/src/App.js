@@ -7,6 +7,9 @@ import Employees from "./pages/employee";
 import Categories from "./pages/category";
 import Products from "./pages/product";
 import Orders from "./pages/order";
+import LeftMenu from "./components/layouts/LeftMenu";
+import Header from "./components/layouts/Header";
+import Footer from "./components/layouts/Footer";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { withFirebase } from "./components/Firebase";
 
@@ -134,68 +137,78 @@ class AppBase extends React.Component {
       orders
     } = this.state;
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route
-            path="/users"
-            component={() => (
-              <Users users={users} addNew={this.addNew} update={this.update} />
-            )}
-          />
-          <Route
-            path="/customers"
-            component={() => (
-              <Customers
-                customers={customers}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/employees"
-            component={() => (
-              <Employees
-                employees={employees}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-          <Route
-            path="/categories"
-            component={() => (
-              <Categories
-                categories={categories}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-          <Route
-            path="/products"
-            component={() => (
-              <Products
-                products={products}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-          <Route
-            path="/orders"
-            component={() => (
-              <Orders
-                orders={orders}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-        </Switch>
-      </Router>
+      <>
+        <Router>
+          <Header />
+          <LeftMenu />
+          <Switch>
+            <Route exact path="/" component={() => <Home />} />
+            <Route
+              path="/users"
+              component={() => (
+                <Users
+                  users={users}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/customers"
+              component={() => (
+                <Customers
+                  customers={customers}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/employees"
+              component={() => (
+                <Employees
+                  employees={employees}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/categories"
+              component={() => (
+                <Categories
+                  categories={categories}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/products"
+              component={() => (
+                <Products
+                  products={products}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/orders"
+              component={() => (
+                <Orders
+                  orders={orders}
+                  products={products}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+          </Switch>
+          <Footer />
+        </Router>
+      </>
     );
   }
 }

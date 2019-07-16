@@ -99,7 +99,7 @@ export default class FormAddNewCustomer extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError}>
+                      <a className="close" onClick={this.closeError} href="gg.com">
                         ×
                       </a>
                       <ul>
