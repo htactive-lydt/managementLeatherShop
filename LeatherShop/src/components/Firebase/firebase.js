@@ -20,5 +20,22 @@ export default class firebase {
     this.db = app.database();
   }
 
+  
+  users = (id) => this.db.ref(`/users/${id}`);
   users = () => this.db.ref("users");
+
+  updateCustomers = (id) => this.db.ref("customers/"+id);
+  customers = () => this.db.ref("customers");
+
+  employees = (id) => this.db.ref(`/employees/${id}`);
+  employees = () => this.db.ref("employees");
+
+  categories = (id) => this.db.ref(`/categories/${id}`);
+  categories = () => this.db.ref("categories");
+
+  products = (id) => this.db.ref(`/products/${id}`);
+  products = () => this.db.ref("products");
+
+  orders = (id) => this.db.ref(`/orders/${id}`);
+  orders = () => this.db.ref("orders");
 }
