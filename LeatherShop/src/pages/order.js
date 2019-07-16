@@ -1,13 +1,20 @@
 import React from "react";
-import LeftMenu from "../components/layouts/LeftMenu";
-import Header from "../components/layouts/Header";
+import FormAddNewOrder from "../components/orders/FormAddNewOrder";
 
-const Orders = () => {
+const Orders = props => {
+  const { addNew, update, customers, deleteItem, products } = props;
   return (
     <>
-      <Header />
-      <LeftMenu />
-      <main className="app-content">Orders Page</main>
+      <main className="app-content">
+        <div className="container">
+          <FormAddNewOrder addNew={addNew} products={products} />
+          {/* <CustomerList
+            customers={customers}
+            update={update}
+            deleteItem={deleteItem}
+          /> */}
+        </div>
+      </main>
     </>
   );
 };

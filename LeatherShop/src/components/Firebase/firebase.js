@@ -24,11 +24,11 @@ export default class firebase {
   }
 
 
-  
+
   updateUsers = (id) => this.db.ref(`/users/${id}`);
   users = () => this.db.ref("users");
 
-  updateCustomers = (id) => this.db.ref("customers/"+id);
+  updateCustomers = (id) => this.db.ref("customers/" + id);
   customers = () => this.db.ref("customers");
 
   updateEmployees = (id) => this.db.ref(`/employees/${id}`);

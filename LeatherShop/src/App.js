@@ -7,6 +7,9 @@ import Employees from "./pages/employee";
 import Categories from "./pages/category";
 import Products from "./pages/product";
 import Orders from "./pages/order";
+import LeftMenu from "./components/layouts/LeftMenu";
+import Header from "./components/layouts/Header";
+import Footer from "./components/layouts/Footer";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { withFirebase } from "./components/Firebase";
 
@@ -25,31 +28,31 @@ class AppBase extends React.Component {
     };
   }
 
-  getTableCall(table, uid) {
+  getTableCall = table => {
     switch (table) {
       case "users": {
-        return this.props.firebase.users(uid);
+        return this.props.firebase.users();
       }
       case "customers": {
-        return this.props.firebase.customers(uid);
+        return this.props.firebase.customers();
       }
       case "employees": {
-        return this.props.firebase.employees(uid);
+        return this.props.firebase.employees();
       }
       case "categories": {
-        return this.props.firebase.categories(uid);
+        return this.props.firebase.categories();
       }
       case "products": {
-        return this.props.firebase.products(uid);
+        return this.props.firebase.products();
       }
       case "orders": {
-        return this.props.firebase.orders(uid);
+        return this.props.firebase.orders();
       }
       default: {
         return "";
       }
     }
-  }
+  };
 
   getTableCallUpdate = (table, id) => {
     switch (table) {
@@ -105,7 +108,6 @@ class AppBase extends React.Component {
 
   update = (table, rowUpdate) => {
     const { id, ...rowUpdateSnapshot } = rowUpdate;
-    console.log("update coi nào",rowUpdate)
     let tableCall = this.getTableCallUpdate(table, id);
     tableCall.set(rowUpdateSnapshot);
   };
@@ -133,7 +135,6 @@ class AppBase extends React.Component {
       products,
       orders
     } = this.state;
-    console.log(this.state);
     return (
       <Router>
         <Switch>
