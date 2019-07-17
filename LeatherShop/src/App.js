@@ -137,6 +137,8 @@ class AppBase extends React.Component {
     } = this.state;
     return (
       <Router>
+        <Header />
+        <LeftMenu />
         <Switch>
           <Route exact path="/" component={() => <Home />} />
           <Route
@@ -152,6 +154,7 @@ class AppBase extends React.Component {
                 customers={customers}
                 addNew={this.addNew}
                 update={this.update}
+                deleteItem={this.deleteItem}
               />
             )}
           />
@@ -192,6 +195,7 @@ class AppBase extends React.Component {
             path="/orders"
             component={() => (
               <Orders
+              products={products}
                 orders={orders}
                 addNew={this.addNew}
                 update={this.update}
@@ -199,6 +203,7 @@ class AppBase extends React.Component {
             )}
           />
         </Switch>
+        <Footer />
       </Router>
     );
   }

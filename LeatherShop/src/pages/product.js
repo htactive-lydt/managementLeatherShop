@@ -8,8 +8,6 @@ const Products = props => {
   const { addNew, update, categories, products, deleteItem } = props;
   return (
     <>
-      <Header />
-      <LeftMenu />
       <main className="app-content">
         <FormAddNewProduct
           addNew={addNew}

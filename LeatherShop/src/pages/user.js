@@ -5,8 +5,6 @@ import Header from "../components/layouts/Header";
 const Users = () => {
   return (
     <>
-      <Header />
-      <LeftMenu />
       <main className="app-content">Users Page</main>
     </>
   );

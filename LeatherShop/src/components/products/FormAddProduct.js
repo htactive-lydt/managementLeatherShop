@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withFirebase } from "../Firebase/context";
+import  firebase  from "../Firebase";
 
 export default class FormAddProduct extends Component {
   state = {

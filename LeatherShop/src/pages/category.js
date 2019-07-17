@@ -8,8 +8,6 @@ const Categories = (props) => {
   const { addNew, update, categories, deleteItem} = props;
   return (
     <>
-      <Header />
-      <LeftMenu />
       <main className="app-content">
         <div className="container">
           <FormAddNewCategories addNew={addNew} update={update} />

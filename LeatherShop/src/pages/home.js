@@ -5,8 +5,7 @@ import LeftMenu from "../components/layouts/LeftMenu";
 const Home = () => {
   return (
     <>
-      <Header />
-      <LeftMenu />
+
     </>
   )
 }
