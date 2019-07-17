@@ -1,5 +1,5 @@
 import React from "react";
-import CategoryListItem from "./CategoryListItem";
+import CategoryListItem from "./CategoryListItems";
 
 export default function CustomerList(props) {
   const { deleteItem, update, categories } = props;
