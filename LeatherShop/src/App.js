@@ -10,6 +10,7 @@ import Orders from "./pages/order";
 import LeftMenu from "./components/layouts/LeftMenu";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
+import Login from "./pages/login";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { withFirebase } from "./components/Firebase";
 
@@ -24,7 +25,8 @@ class AppBase extends React.Component {
       employees: [],
       categories: [],
       products: [],
-      orders: []
+      orders: [],
+      user: ""
     };
   }
 
@@ -135,6 +137,7 @@ class AppBase extends React.Component {
       products,
       orders
     } = this.state;
+    // if(this.state.user){
     return (
       <Router>
         <Header />
@@ -144,7 +147,12 @@ class AppBase extends React.Component {
           <Route
             path="/users"
             component={() => (
-              <Users users={users} addNew={this.addNew} update={this.update} />
+              <Users
+                users={users}
+                addNew={this.addNew}
+                update={this.update}
+                deleteItem={this.deleteItem}
+              />
             )}
           />
           <Route
@@ -195,13 +203,14 @@ class AppBase extends React.Component {
             path="/orders"
             component={() => (
               <Orders
-              products={products}
+                products={products}
                 orders={orders}
                 addNew={this.addNew}
                 update={this.update}
               />
             )}
           />
+          <Route path="/login" component={() => <Login users={users} />} />
         </Switch>
         <Footer />
       </Router>

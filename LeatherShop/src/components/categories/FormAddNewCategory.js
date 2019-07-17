@@ -1,6 +1,5 @@
-import { ifError } from "assert";
 
-import React from "./node_modules/react";
+import React from "react";
 
 class FormAddNewCategories extends React.Component {
   state = {
@@ -68,7 +67,7 @@ class FormAddNewCategories extends React.Component {
             <div className="panel-heading">
               <button
                 type="button"
-                className="btn"
+                className="btn btn-form"
                 onClick={this.handleOpenForm}
               >
                 {isOpenForm ? "CANCEL" : "ADD NEW"}
@@ -105,7 +104,7 @@ class FormAddNewCategories extends React.Component {
                 <div className="form-group col-md-1">
                   <button
                     type="button"
-                    className="btn"
+                    className="btn btn-form"
                     onClick={this.addNewCategory}
                   >
                     ADD

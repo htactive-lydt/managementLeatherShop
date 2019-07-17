@@ -43,12 +43,12 @@ export default class CategoryListItem extends React.Component {
 
     return (
       <>
-        <tr key={key}>
+        <tr key={key}className={`${isUpdating ? "" : "disable"}`}>
           <th>{this.props.index+1}</th>
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="cateName"
               defaultValue={cateName}
               onChange={this.handleChange}

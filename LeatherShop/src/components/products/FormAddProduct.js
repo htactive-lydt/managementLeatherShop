@@ -9,7 +9,7 @@ class FormAddProductBase extends Component {
       dateAdd: "",
       dateAt: "",
       description: "",
-      image: "",
+      image: null,
       name: "",
       priceIn: "",
       priceOut: "",
@@ -37,13 +37,18 @@ class FormAddProductBase extends Component {
   };
 
   addNewProduct = event => {
+    event.preventDefault();
     const { image } = this.state;
-    console.log(image,"image")
-    const uploadTask = this.props.firebase.storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      error => {
-        console.log(error);
+    console.log(image,"image");
+    if(this.checkValidate()){
+      const uploadTask = this.props.firebase.storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on('state_changed', 
+      (snapshot) => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        this.setState({progress});
+      }, 
+      (error) => {
+        console.log("error", error);
       },
       () => {
         this.props.firebase.storage
@@ -52,17 +57,14 @@ class FormAddProductBase extends Component {
           .getDownloadURL()
           .then(url => {
             console.log("url", url);
-            this.setState({ url });
+            this.props.addNew("products", {
+              ...this.state.newProduct,
+              image: url
+            });
           });
       }
     );
-    event.preventDefault();
-   
-      this.props.addNew("products", this.state.newProduct);
-      this.setState({
-        isOpenForm: false
-      });
-    
+    }
   };
   closeError = () => {
     this.setState({
@@ -106,6 +108,12 @@ class FormAddProductBase extends Component {
     }
     if (!description) {
       errors.push("Product's description is required");
+    }
+    if(!image){
+      errors.push("Product's image is required");
+    }
+    if(!name){
+      errors.push("Proudct's name is required");
     }
     if (!priceIn) {
       errors.push("Product's price in is required");

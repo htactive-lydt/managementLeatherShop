@@ -1,4 +1,4 @@
-import React from "./node_modules/reacte_modules/react";
+import React from "react";
 
 export default class CategoryListItem extends React.Component {
   constructor(props) {
@@ -43,7 +43,6 @@ export default class CategoryListItem extends React.Component {
     const {
       cateID,
       dateAdd,
-      deleteAt,
       image,
       name,
       priceIn,
@@ -55,24 +54,22 @@ export default class CategoryListItem extends React.Component {
 
     return (
       <>
-        <tr>
-          <td key={key}>
+        <tr className={`${isUpdating ? "" : "disable"}`}>
+          <td key={key} >
             <select
               onChange={this.handleChange}
               defaultValue={cateID}
+              name="cateID"
               className={`form-control ${isUpdating ? "" : "disable"}`}
             >
               {categories.map((item, index) => (
-                <option
-                  key={index}
-                  value={item.id}
-                >
+                <option key={index} value={item.id}>
                   {item.cateName}
                 </option>
               ))}
             </select>
           </td>
-          <td>
+          <td width="320px">
             <input
               type="text"
               className={`form-control ${isUpdating ? "" : "disable"}`}
@@ -82,12 +79,19 @@ export default class CategoryListItem extends React.Component {
             />
           </td>
           <td>
-            <img src={image} alt="Not Found" height="250px" width="250px" />
+            <input
+              type={`${isUpdating ? "image" : "image"}`}
+              src={image}
+              alt="Not Found"
+              height="100px"
+              width="100px"
+              name="image"
+            />
           </td>
-          <td>
+          <td width="30px">
             <input
               type="date"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control" 
               name="dateAdd"
               defaultValue={dateAdd}
               onChange={this.handleChange}
@@ -95,17 +99,8 @@ export default class CategoryListItem extends React.Component {
           </td>
           <td>
             <input
-              type="date"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
-              name="deleteAt"
-              defaultValue={deleteAt}
-              onChange={this.handleChange}
-            />
-          </td>
-          <td>
-            <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control" 
               name="priceIn"
               defaultValue={priceIn}
               onChange={this.handleChange}
@@ -114,7 +109,7 @@ export default class CategoryListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control" 
               name="priceOut"
               defaultValue={priceOut}
               onChange={this.handleChange}
@@ -123,22 +118,22 @@ export default class CategoryListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control" 
               name="pricePromotion"
               defaultValue={pricePromotion}
               onChange={this.handleChange}
             />
           </td>
-          <td>
+          <td width="50px">
             <input
               type="number"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control" 
               name="quantity"
               defaultValue={quantity}
               onChange={this.handleChange}
             />
           </td>
-          <td>
+          <td width="200px">
             {isUpdating ? (
               <span>
                 <button

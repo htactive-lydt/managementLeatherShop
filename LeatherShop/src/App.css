@@ -1020,11 +1020,13 @@ mark,
   margin-top: 20px;
 }
 
-.disable {
+.disable td input, .disable td select {
   border: none;
   background-color: #fff;
   pointer-events: none;
 }
+
+
 
 .app-footer {
   -ms-flex: 0 0 50px;
