@@ -3,10 +3,11 @@ import CategoryListItem from "./CategoryListItem";
 
 export default function CustomerList(props) {
   const { deleteItem, update, categories } = props;
-  let listItems = categories.map(item => (
+  let listItems = categories.map((item, index) => (
     <CategoryListItem
       key={item.id}
       item={item}
+      index={index}
       deleteItem={deleteItem}
       update={update}
     />

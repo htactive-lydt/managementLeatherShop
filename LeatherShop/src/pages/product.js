@@ -1,7 +1,5 @@
 import React from "react";
-import LeftMenu from "../components/layouts/LeftMenu";
-import Header from "../components/layouts/Header";
-import FormAddNewProduct from "../components/products/FormAddProduct";
+import {FormAddNewProduct} from "../components/products/FormAddProduct";
 import ProductList from "../components/products/ProductList";
 
 const Products = props => {

@@ -44,7 +44,7 @@ export default class CategoryListItem extends React.Component {
     return (
       <>
         <tr key={key}>
-          <th>1</th>
+          <th>{this.props.index+1}</th>
           <td>
             <input
               type="text"

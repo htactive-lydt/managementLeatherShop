@@ -58,14 +58,13 @@ export default class CategoryListItem extends React.Component {
         <tr>
           <td key={key}>
             <select
-              className="form-control"
               onChange={this.handleChange}
+              defaultValue={cateID}
               className={`form-control ${isUpdating ? "" : "disable"}`}
             >
               {categories.map((item, index) => (
                 <option
                   key={index}
-                  selected={item.id === cateID ? "selected" : ""}
                   value={item.id}
                 >
                   {item.cateName}

@@ -1,6 +1,4 @@
 import React from "react";
-import LeftMenu from "../components/layouts/LeftMenu";
-import Header from "../components/layouts/Header";
 
 const Users = () => {
   return (
