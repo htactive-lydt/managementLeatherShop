@@ -2,7 +2,7 @@ import React from "react";
 import FormAddNewOrder from "../components/orders/FormAddNewOrder";
 
 const Orders = props => {
-  const { addNew, update, customers, deleteItem, products } = props;
+  const { addNew, products } = props;
   return (
     <>
       <main className="app-content">

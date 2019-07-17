@@ -1,6 +1,4 @@
 import React from "react";
-import LeftMenu from "../components/layouts/LeftMenu";
-import Header from "../components/layouts/Header";
 import FormAddNewCategories from "../components/categories/FormAddNewCategories";
 import CategoryList from "../components/categories/CategoryList";
 

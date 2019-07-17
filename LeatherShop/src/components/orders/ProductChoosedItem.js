@@ -30,7 +30,7 @@ export default function ProductChoosedItem(props) {
       <div className="row">
         <div className="col-md-5">
           <p>{name}</p>
-          {step === 2 ? <img src={image} width="100px"/> : ""}
+          {step === 2 ? <img src={image} alt="Product" width="100px"/> : ""}
         </div>
         <div>
           <button
