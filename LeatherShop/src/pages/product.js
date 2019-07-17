@@ -1,5 +1,5 @@
 import React from "react";
-import FormAddNewProduct from "../components/products/FormAddProduct";
+import {FormAddNewProduct} from "../components/products/FormAddProduct";
 import ProductList from "../components/products/ProductList";
 
 const Products = props => {

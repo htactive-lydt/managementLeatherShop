@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import  firebase  from "../Firebase";
+import  {withFirebase}  from "../Firebase";
 
-export default class FormAddProduct extends Component {
+class FormAddProductBase extends Component {
   state = {
     isOpenForm: false,
     newProduct: {
@@ -139,7 +139,7 @@ export default class FormAddProduct extends Component {
             <div className="panel-heading">
               <button
                 type="button"
-                className="btn"
+                className="btn btn-form"
                 onClick={this.handleOpenForm}
               >
                 {isOpenForm ? "CANCEL" : "ADD NEW"}
@@ -151,7 +151,7 @@ export default class FormAddProduct extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError}>
+                      <a className="close" onClick={this.closeError} href="google.com">
                         ×
                       </a>
                       <ul>
@@ -271,7 +271,7 @@ export default class FormAddProduct extends Component {
                 <div className="form-group col-md-1">
                   <button
                     type="button"
-                    className="btn"
+                    className="btn btn-form"
                     onClick={this.addNewProduct}
                   >
                     ADD
@@ -287,3 +287,7 @@ export default class FormAddProduct extends Component {
     );
   }
 }
+
+const FormAddNewProduct = withFirebase(FormAddProductBase);
+
+export {FormAddNewProduct};

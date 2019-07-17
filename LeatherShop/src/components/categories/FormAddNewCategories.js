@@ -78,7 +78,7 @@ class FormAddNewCategories extends React.Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError}>
+                      <a className="close" onClick={this.closeError} href="google.com">
                         ×
                       </a>
                       <ul>
