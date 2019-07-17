@@ -39,24 +39,24 @@ export default class CustomerListItem extends Component {
   };
 
   render() {
-    const { name, birthday, address, phoneNumber } = this.props.item;
+    const { name, birthday, address, phoneNumber, score } = this.props.item;
     const { isUpdating } = this.state;
     return (
-      <tr>
+      <tr className={`${isUpdating ? "" : "disable"}`}>
         <td>{this.props.index + 1}</td>
         <td>
           <input
             type="text"
-            className={`form-control ${isUpdating ? "" : "disable"}`}
+            className="form-control"
             name="name"
             defaultValue={name}
             onChange={this.handleChange}
           />
         </td>
-        <td>
+        <td width="150px">
           <input
             type="date"
-            className={`form-control ${isUpdating ? "" : "disable"}`}
+            className="form-control"
             name="birthday"
             defaultValue={birthday}
             onChange={this.handleChange}
@@ -65,18 +65,27 @@ export default class CustomerListItem extends Component {
         <td>
           <input
             type="text"
-            className={`form-control ${isUpdating ? "" : "disable"}`}
+            className="form-control"
             name="address"
             defaultValue={address}
             onChange={this.handleChange}
           />
         </td>
-        <td>
+        <td width="150px">
           <input
             type="text"
-            className={`form-control ${isUpdating ? "" : "disable"}`}
+            className="form-control"
             name="phoneNumber"
             defaultValue={phoneNumber}
+            onChange={this.handleChange}
+          />
+        </td>
+        <td width="50px">
+          <input
+            type="text"
+            className="form-control"
+            name="score"
+            defaultValue={score}
             onChange={this.handleChange}
           />
         </td>

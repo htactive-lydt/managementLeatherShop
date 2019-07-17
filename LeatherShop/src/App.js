@@ -1,5 +1,6 @@
 import React from "react";
-// import AdminPage from "./pages/admin";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
 import Home from "./pages/home";
 import Users from "./pages/user";
 import Customers from "./pages/customer";
@@ -10,8 +11,8 @@ import Orders from "./pages/order";
 import LeftMenu from "./components/layouts/LeftMenu";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { withFirebase } from "./components/Firebase";
+import IsLoading from "./components/layouts/IsLoading";
 
 import "./App.css";
 
@@ -19,6 +20,7 @@ class AppBase extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       users: [],
       customers: [],
       employees: [],
@@ -82,6 +84,9 @@ class AppBase extends React.Component {
 
   getData = table => {
     let tableCall = this.getTableCall(table);
+    this.setState({
+      isLoaded: false
+    });
     tableCall.on("value", snapshot => {
       const object = snapshot.val();
       if (object) {
@@ -90,7 +95,8 @@ class AppBase extends React.Component {
           id: key
         }));
         this.setState({
-          [table]: objectList
+          [table]: objectList,
+          isLoaded: true
         });
       } else {
         this.setState({
@@ -102,8 +108,9 @@ class AppBase extends React.Component {
 
   addNew = (table, rowNew) => {
     let tableCall = this.getTableCall(table);
-    tableCall.push(rowNew);
+    let key = tableCall.push(rowNew).getKey();
     this.getData(table);
+    return key;
   };
 
   update = (table, rowUpdate) => {
@@ -128,6 +135,7 @@ class AppBase extends React.Component {
 
   render() {
     const {
+      isLoaded,
       users,
       customers,
       employees,
@@ -139,70 +147,81 @@ class AppBase extends React.Component {
       <Router>
         <Header />
         <LeftMenu />
-        <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route
-            path="/users"
-            component={() => (
-              <Users users={users} addNew={this.addNew} update={this.update} />
-            )}
-          />
-          <Route
-            path="/customers"
-            component={() => (
-              <Customers
-                customers={customers}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/employees"
-            component={() => (
-              <Employees
-                employees={employees}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-          <Route
-            path="/categories"
-            component={() => (
-              <Categories
-                categories={categories}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/products"
-            component={() => (
-              <Products
-                products={products}
-                categories={categories}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/orders"
-            component={() => (
-              <Orders
-              products={products}
-                orders={orders}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-        </Switch>
+        {isLoaded ? (
+          <Switch>
+            <Route exact path="/" component={() => <Home />} />
+            <Route
+              path="/users"
+              component={() => (
+                <Users
+                  users={users}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/customers"
+              component={() => (
+                <Customers
+                  customers={customers}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/employees"
+              component={() => (
+                <Employees
+                  employees={employees}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+            <Route
+              path="/categories"
+              component={() => (
+                <Categories
+                  categories={categories}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/products"
+              component={() => (
+                <Products
+                  products={products}
+                  categories={categories}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/orders"
+              component={() => (
+                <Orders
+                  listProducts={products}
+                  orders={orders}
+                  customers={customers}
+                  addNew={this.addNew}
+                  deleteItem={this.deleteItem}
+                  update={this.update}
+                />
+              )}
+            />
+          </Switch>
+        ) : (
+          <IsLoading />
+        )}
+
         <Footer />
       </Router>
     );

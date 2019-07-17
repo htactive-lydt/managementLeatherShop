@@ -27,10 +27,11 @@ export default function CustomerList(props) {
                 <th>BIRTHDAY</th>
                 <th>ADDRESS</th>
                 <th>PHONE NUMBER</th>
+                <th>SCORE</th>
                 <th>CONTROL</th>
               </tr>
             </thead>
-            <tbody id="studentList">
+            <tbody>
             {listItems}
             </tbody>
           </table>

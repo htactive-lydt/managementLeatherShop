@@ -7,7 +7,8 @@ export default class FormAddNewCustomer extends Component {
       name: "",
       birthday: "",
       phoneNumber: "",
-      address: ""
+      address: "",
+      score: 0
     },
     errors: []
   };
@@ -51,6 +52,7 @@ export default class FormAddNewCustomer extends Component {
 
   addNewCustomer = event => {
     event.preventDefault();
+    console.log(this.state.newCustomer)
     if (this.checkValid()) {
       this.props.addNew("customers", this.state.newCustomer);
       this.setState({
@@ -59,7 +61,8 @@ export default class FormAddNewCustomer extends Component {
           name: "",
           birthday: "",
           phoneNumber: "",
-          address: ""
+          address: "",
+          score: 0
         }
       });
     }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ProductSearchItem from "./ProductSearchItem";
-import ProductChoosedItem from "./ProductChoosedItem";
 import ProductChoosedList from "./ProductChoosedList";
+import CustomerSearchItem from "./CustomerSearchItem";
 
 export default class FormAddNewOrder extends Component {
   constructor(props) {
@@ -11,9 +11,15 @@ export default class FormAddNewOrder extends Component {
       step: 1,
       readyToOrder: false,
       errors: [],
-      resultSearch: [],
+      resultSearchProd: [],
+      resultSearchCus: [],
       productChoosed: [],
-      valueSearch: ""
+      valueSearch: "",
+      name: "",
+      address: "",
+      birthday: "",
+      phoneNumber: "",
+      isMember: "normal"
     };
   }
 
@@ -26,6 +32,7 @@ export default class FormAddNewOrder extends Component {
       });
     } else {
       this.setState({
+        productChoosed: [],
         readyToOrder: false
       });
     }
@@ -81,29 +88,60 @@ export default class FormAddNewOrder extends Component {
   };
 
   handleChange = event => {
+    let name = event.target.name;
+    let value = event.target.value;
     this.setState({
-      valueSearch: event.target.value
+      [name]: value
+    });
+  };
+
+  handleChangeIsMember = type => {
+    this.setState({
+      isMember: type
     });
   };
 
   searchProduct = () => {
-    const { products } = this.props;
-    let searchValue = this.state.valueSearch;
-    let resultSearch = products.filter(
-      item => item.name.search(searchValue) !== -1
-    );
-    this.setState({
-      searchValue,
-      resultSearch
-    });
+    const { listProducts } = this.props;
+    let searchValue = this.state.valueSearchProd;
+    if (listProducts.length > 0) {
+      let resultSearchProd = listProducts.filter(
+        item => item.name.search(searchValue) !== -1
+      );
+      this.setState({
+        searchValue,
+        resultSearchProd
+      });
+    }
   };
 
-  showListSearch = () => {
-    const { resultSearch } = this.state;
+  searchCustomer = () => {
+    const { customers } = this.props;
+
+    let { valueSearchCus, optionSearchCus } = this.state;
+    if (customers.length > 0) {
+      let resultSearchCus = [];
+      if (optionSearchCus === "name") {
+        resultSearchCus = customers.filter(
+          item => item.name.search(valueSearchCus) !== -1
+        );
+      } else {
+        resultSearchCus = customers.filter(
+          item => item.phoneNumber.search(valueSearchCus) !== -1
+        );
+      }
+      this.setState({
+        resultSearchCus
+      });
+    }
+  };
+
+  showListSearchProd = () => {
+    const { resultSearchProd } = this.state;
     let listProductSearch = "";
 
-    if (resultSearch) {
-      listProductSearch = resultSearch.map(item => (
+    if (resultSearchProd) {
+      listProductSearch = resultSearchProd.map(item => (
         <ProductSearchItem
           item={item}
           key={item.id}
@@ -114,32 +152,16 @@ export default class FormAddNewOrder extends Component {
     return listProductSearch;
   };
 
-  showProductChoosed = () => {
-    const { productChoosed } = this.state || [];
-    const { products } = this.props;
-    let productChoosedList = "";
+  showListSearchCus = () => {
+    const { resultSearchCus } = this.state;
+    let listCustomerSearch = "";
 
-    if (productChoosed) {
-      productChoosedList = productChoosed.map(cartItem => {
-        const { id, quantity } = cartItem;
-        let { name, priceOut } = products.find(product => product.id === id);
-        let item = {
-          id,
-          quantity,
-          name,
-          priceOut
-        };
-        return (
-          <ProductChoosedItem
-            item={item}
-            key={item.id}
-            changeQuantity={this.changeQuantity}
-            deleteCart={this.deleteCart}
-          />
-        );
-      });
+    if (resultSearchCus) {
+      listCustomerSearch = resultSearchCus.map(item => (
+        <CustomerSearchItem key={item.id} item={item} />
+      ));
     }
-    return productChoosedList;
+    return listCustomerSearch;
   };
 
   changeQuantity = (id, quantity, type) => {
@@ -158,149 +180,305 @@ export default class FormAddNewOrder extends Component {
     this.changeStateProductChoosed();
   };
 
+  calTotalPrice = () => {
+    let data = JSON.parse(localStorage.getItem("items")) || [];
+    const { listProducts } = this.props;
+    let totalPrice = 0;
+    if (data.length > 0 && listProducts.length > 0) {
+      totalPrice = data.reduce((total, item) => {
+        let { priceOut } = listProducts.find(product => product.id === item.id);
+        return total + Number(priceOut) * Number(item.quantity);
+      }, 0);
+    }
+    return totalPrice;
+  };
+
+  addNewOrder = () => {
+    let products = JSON.parse(localStorage.getItem("items")) || [];
+    let date = new Date();
+    let orderDate =
+      date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    const { name, address, phoneNumber, birthday, isMember } = this.state;
+    let infoOrder = {
+      orderDate: orderDate,
+      amount: this.calTotalPrice(),
+      products
+    };
+    if (isMember === "normal") {
+      this.props.addNew("orders", {
+        ...infoOrder
+      });
+    }
+    if (isMember === "addNew") {
+      let idCus = this.props.addNew("customers", {
+        name,
+        address,
+        phoneNumber,
+        birthday
+      });
+      this.props.addNew("orders", {
+        ...infoOrder,
+        idCus
+      });
+    }
+    localStorage.clear();
+    this.setState({
+      isOpenForm: false
+    });
+  };
+
   render() {
     const {
       isOpenForm,
       errors,
       step,
       readyToOrder,
-      productChoosed
+      productChoosed,
+      isMember
     } = this.state;
-    const { products } = this.props;
+    const { listProducts } = this.props;
+
+    const totalPrice = this.calTotalPrice();
     return (
       <div>
-        <form>
-          <div className="panel panel-default">
-            <div className="panel-heading">
-              <button
-                type="button"
-                className="btn btn-form"
-                onClick={this.handleOpenForm}
-              >
-                {isOpenForm ? "CANCEL" : "ADD NEW"}
-              </button>
-            </div>
-            {isOpenForm ? (
-              <div className="panel-body row" id="form-add">
-                {errors.length > 0 ? (
-                  <>
-                    <div className="col-md-1" />
-                    <div className="alert alert-danger col-md-10">
-                      <a
-                        className="close"
-                        onClick={this.closeError}
-                        href="gg.com"
-                      >
-                        ×
-                      </a>
-                      <ul>
-                        {errors.map((item, index) => (
-                          <li key={index}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-                {step === 1 ? (
-                  <>
-                    <div className="choose-product form-group col-md-5">
-                      <div className="solugan">
-                        <div className="box-product-head">
-                          <span className="box-title">CHOOSE PRODUCT</span>
-                          <span className="af-ter" />
-                        </div>
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <button
+              type="button"
+              className="btn btn-form"
+              onClick={this.handleOpenForm}
+            >
+              {isOpenForm ? "CANCEL" : "ADD NEW"}
+            </button>
+          </div>
+          {isOpenForm ? (
+            <div className="panel-body row" id="form-add">
+              {errors.length > 0 ? (
+                <>
+                  <div className="col-md-1" />
+                  <div className="alert alert-danger col-md-10">
+                    <a
+                      className="close"
+                      onClick={this.closeError}
+                      href="gg.com"
+                    >
+                      ×
+                    </a>
+                    <ul>
+                      {errors.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+              {step === 1 ? (
+                <>
+                  <div className="choose-product form-group col-md-5">
+                    <div className="solugan">
+                      <div className="box-product-head">
+                        <span className="box-title">CHOOSE PRODUCT</span>
+                        <span className="af-ter" />
                       </div>
-                      <div className="row search-product">
-                        <div className="offset-md-2 col-md-6 input-search">
+                    </div>
+                    <div className="row search-product">
+                      <div className="offset-md-2 col-md-6 input-search">
+                        <input
+                          type="text"
+                          placeholder="Search.."
+                          name="valueSearchProd"
+                          className="form-control"
+                          onChange={this.handleChange}
+                          onKeyPress={this.searchProduct}
+                        />
+                      </div>
+                      <div className="col-md-1">
+                        <button
+                          type="button"
+                          className="btn btn-form"
+                          onClick={this.searchProduct}
+                        >
+                          <i className="fa fa-search" />
+                        </button>
+                      </div>
+                      <div className="searchResult col-md-12">
+                        <ul className="list-group col-md-11 offset-md-1">
+                          {this.showListSearchProd()}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-7">
+                    <div className="solugan">
+                      <div className="box-product-head">
+                        <span className="box-title">LIST PRODUCT</span>
+                        <span className="af-ter" />
+                      </div>
+                      <ProductChoosedList
+                        listProducts={listProducts}
+                        productChoosed={productChoosed}
+                        deleteCart={this.deleteCart}
+                        step={step}
+                        changeQuantity={this.changeQuantity}
+                      />
+                      {readyToOrder ? (
+                        <div className="offset-md-10">
+                          <button
+                            className="btn btn-form"
+                            onClick={this.nextStep}
+                          >
+                            NEXT
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="col-md-12">
+                    <div className="box-product-head">
+                      <span className="box-title">CUSTOMER INFORMATION</span>
+                      <span className="af-ter" />
+                    </div>
+                    <div className="row">
+                      <div className="col-sm-2">
+                        <button
+                          type="button"
+                          className="btn btn-info"
+                          onClick={() => this.handleChangeIsMember("member")}
+                        >
+                          MEMBER
+                        </button>
+                      </div>
+                      <div className="col-sm-2">
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => this.handleChangeIsMember("addNew")}
+                        >
+                          ADD NEW
+                        </button>
+                      </div>
+                    </div>
+                    {isMember === "addNew" && (
+                      <form className="form-add-customer row">
+                        <div className="form-group col-md-6">
+                          <label>Customer's name:</label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="name"
+                            placeholder="Enter customer's name"
+                            onChange={this.handleChange}
+                          />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <label>Customer's birthday:</label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            name="birthday"
+                            onChange={this.handleChange}
+                          />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <label>Customer's address:</label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="address"
+                            placeholder="Enter customer's address"
+                            onChange={this.handleChange}
+                          />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <label>Customer's phone number:</label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="phoneNumber"
+                            placeholder="Enter customer's phone number"
+                            onChange={this.handleChange}
+                          />
+                        </div>
+                      </form>
+                    )}
+                    {isMember === "member" && (
+                      <div className="row search-customer">
+                        <div className="col-md-2">
+                          <select
+                            className="form-control"
+                            name="optionSearchCus"
+                            onChange={this.handleChange}
+                          >
+                            <option value="phoneNumber">Phone Number</option>
+                            <option value="name">Name</option>
+                          </select>
+                        </div>
+                        <div className="col-md-4 input-search">
                           <input
                             type="text"
                             placeholder="Search.."
+                            name="valueSearchCus"
                             className="form-control"
+                            onKeyPress={this.searchCustomer}
                             onChange={this.handleChange}
-                            onKeyPress={this.searchProduct}
                           />
                         </div>
                         <div className="col-md-1">
                           <button
                             type="button"
                             className="btn btn-form"
-                            onClick={this.searchProduct}
+                            onClick={this.searchCustomer}
                           >
                             <i className="fa fa-search" />
                           </button>
                         </div>
                         <div className="searchResult col-md-12">
-                          <ul className="list-group col-md-11 offset-md-1">
-                            {this.showListSearch()}
+                          <ul className="list-group col-md-10 offset-md-1">
+                            {this.showListSearchCus()}
                           </ul>
                         </div>
                       </div>
+                    )}
+                  </div>
+                  <div className="col-md-12">
+                    <div className="box-product-head">
+                      <span className="box-title">LIST PRODUCT</span>
+                      <span className="af-ter" />
                     </div>
-                    <div className="col-md-7">
-                      <div className="solugan">
-                        <div className="box-product-head">
-                          <span className="box-title">LIST PRODUCT</span>
-                          <span className="af-ter" />
-                        </div>
-                        <ProductChoosedList
-                          products={products}
-                          productChoosed={productChoosed}
-                          deleteCart={this.deleteCart}
-                          step={step}
-                          changeQuantity={this.changeQuantity}
-                        />
-                        {readyToOrder ? (
-                          <div className="offset-md-10">
-                            <button
-                              className="btn btn-form"
-                              onClick={this.nextStep}
-                            >
-                              ORDER
-                            </button>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                    <ProductChoosedList
+                      listProducts={listProducts}
+                      productChoosed={productChoosed}
+                      step={step}
+                      deleteCart={this.deleteCart}
+                      changeQuantity={this.changeQuantity}
+                    />
+                    <div className="offset-md-8">
+                      <h3>Total price: {totalPrice}</h3>
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="col-md-12">
-                      <div className="box-product-head">
-                        <span className="box-title">CUSTOMER INFORMATION</span>
-                        <span className="af-ter" />
-                      </div>
-                    </div>
-                    <div className="col-md-12">
-                      <div className="box-product-head">
-                        <span className="box-title">LIST PRODUCT</span>
-                        <span className="af-ter" />
-                      </div>
-                      <ProductChoosedList
-                        products={products}
-                        productChoosed={productChoosed}
-                        step={step}
-                        deleteCart={this.deleteCart}
-                        changeQuantity={this.changeQuantity}
-                      />
-                      <button className="btn btn-form" onClick={this.backStep}>
-                        BACK
-                      </button>
-                      <button className="btn btn-form offset-md-10">
-                        ORDER
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-        </form>
+                    <button className="btn btn-form" onClick={this.backStep}>
+                      BACK
+                    </button>
+                    <button
+                      className="btn btn-form offset-md-10"
+                      onClick={this.addNewOrder}
+                    >
+                      ORDER
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     );
   }

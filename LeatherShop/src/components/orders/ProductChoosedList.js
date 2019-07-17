@@ -2,13 +2,13 @@ import React from 'react';
 import ProductChoosedItem from "./ProductChoosedItem";
 
 export default function ProductChoosedList(props) {
-  const {products, productChoosed, step} = props;
+  const {listProducts, productChoosed, step} = props;
   let productChoosedList = "";
 
   if (productChoosed) {
     productChoosedList = productChoosed.map(cartItem => {
       const { id, quantity } = cartItem;
-      let { name, priceOut, image } = products.find(product => product.id === id);
+      let { name, priceOut, image } = listProducts.find(product => product.id === id);
       let item = {
         id,
         quantity,
