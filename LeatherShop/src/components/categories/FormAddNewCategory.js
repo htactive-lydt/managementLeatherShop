@@ -1,4 +1,6 @@
-import React from "react";
+import { ifError } from "assert";
+
+import React from "./node_modules/react";
 
 class FormAddNewCategories extends React.Component {
   state = {

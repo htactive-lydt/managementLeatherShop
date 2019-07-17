@@ -1,5 +1,5 @@
 import React from "react";
-import FormAddNewCategories from "../components/categories/FormAddNewCategories";
+import FormAddNewCategories from "../components/categories/FormAddNewCategory";
 import CategoryList from "../components/categories/CategoryList";
 
 const Categories = (props) => {

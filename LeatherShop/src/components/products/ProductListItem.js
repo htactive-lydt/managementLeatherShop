@@ -1,4 +1,4 @@
-import React from "react";
+import React from "./node_modules/reacte_modules/react";
 
 export default class CategoryListItem extends React.Component {
   constructor(props) {
