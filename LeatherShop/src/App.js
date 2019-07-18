@@ -119,10 +119,20 @@ class AppBase extends React.Component {
     tableCall.set(rowUpdateSnapshot);
   };
 
-  deleteItem = (table, id) => {
+  deleteItem = (table, rowUpdate) => {
+    const { id, ...rowUpdateSnapshot } = rowUpdate;
+    let date = new Date();
+    let deleteDate =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.remove();
+    tableCall.set({...rowUpdateSnapshot, deleteAt: deleteDate});
   };
+
+  undoDelete = (table, rowUpdate) => {
+    const { id, ...rowUpdateSnapshot } = rowUpdate;
+    let tableCall = this.getTableCallUpdate(table, id);
+    tableCall.set({...rowUpdateSnapshot, deleteAt: ""});
+  }
 
   componentDidMount() {
     this.getData("users");
@@ -165,6 +175,7 @@ class AppBase extends React.Component {
               component={() => (
                 <Customers
                   customers={customers}
+                  undoDelete={this.undoDelete}
                   addNew={this.addNew}
                   update={this.update}
                   deleteItem={this.deleteItem}
@@ -214,6 +225,7 @@ class AppBase extends React.Component {
                   addNew={this.addNew}
                   deleteItem={this.deleteItem}
                   update={this.update}
+                  undoDelete={this.undoDelete}
                 />
               )}
             />

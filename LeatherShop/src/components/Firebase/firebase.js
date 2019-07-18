@@ -23,8 +23,6 @@ export default class firebase {
     this.storage = app.storage();
   }
 
-
-
   updateUsers = (id) => this.db.ref(`/users/${id}`);
   users = () => this.db.ref("users");
 

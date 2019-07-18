@@ -40,18 +40,24 @@ export default class FormAddNewOrder extends Component {
 
   componentDidMount() {
     this.changeStateProductChoosed();
+    let step = JSON.parse(localStorage.getItem("step")) || 1;
+    this.setState({
+      step
+    });
   }
 
   nextStep = () => {
     this.setState({
       step: 2
     });
+    localStorage.setItem("step", JSON.stringify(2));
   };
 
   backStep = () => {
     this.setState({
       step: 1
     });
+    localStorage.setItem("step", JSON.stringify(1));
   };
 
   addToCart = item => {
@@ -96,18 +102,27 @@ export default class FormAddNewOrder extends Component {
   };
 
   handleChangeIsMember = type => {
+    this.closeError();
     this.setState({
       isMember: type
     });
+    if (type === "addNew") {
+      this.setState({
+        promotion: 0
+      });
+    }
   };
 
   searchProduct = () => {
     const { listProducts } = this.props;
     let searchValue = this.state.valueSearchProd;
     if (listProducts.length > 0) {
-      let resultSearchProd = listProducts.filter(
-        item => item.name.search(searchValue) !== -1
-      );
+      let resultSearchProd = listProducts.filter(item => {
+        if (!item.deleteAt) {
+          return item.name.search(searchValue) !== -1;
+        }
+        return "";
+      });
       this.setState({
         searchValue,
         resultSearchProd
@@ -122,13 +137,19 @@ export default class FormAddNewOrder extends Component {
     if (customers.length > 0) {
       let resultSearchCus = [];
       if (optionSearchCus === "name") {
-        resultSearchCus = customers.filter(
-          item => item.name.search(valueSearchCus) !== -1
-        );
+        resultSearchCus = customers.filter(item => {
+          if (!item.deleteAt) {
+            return item.name.search(valueSearchCus) !== -1;
+          }
+          return "";
+        });
       } else {
-        resultSearchCus = customers.filter(
-          item => item.phoneNumber.search(valueSearchCus) !== -1
-        );
+        resultSearchCus = customers.filter(item => {
+          if (!item.deleteAt) {
+            return item.phoneNumber.search(valueSearchCus) !== -1;
+          }
+          return "";
+        });
       }
       this.setState({
         resultSearchCus
@@ -153,28 +174,33 @@ export default class FormAddNewOrder extends Component {
   };
 
   showListSearchCus = () => {
-    const { resultSearchCus } = this.state;
+    const { resultSearchCus, idCus } = this.state;
     let listCustomerSearch = "";
 
     if (resultSearchCus) {
       listCustomerSearch = resultSearchCus.map(item => (
-        <CustomerSearchItem key={item.id} item={item} />
+        <CustomerSearchItem
+          key={item.id}
+          item={item}
+          currentCus={idCus}
+          checkCustomer={this.checkCustomer}
+        />
       ));
     }
     return listCustomerSearch;
   };
 
-  changeQuantity = (id, quantity, type) => {
+  changeQuantity = ({ id, currQuantity, quantity }, plusQuantity, type) => {
     let data = JSON.parse(localStorage.getItem("items")) || [];
 
     let index = data.findIndex(item => item.id === id);
 
-    if (type === "minus") {
+    if (type === "minus" && quantity > 0) {
       data[index].quantity -= 1;
-    } else if (type === "plus") {
+    } else if (type === "plus" && quantity < currQuantity) {
       data[index].quantity += 1;
-    } else {
-      data[index].quantity = +quantity;
+    } else if (quantity + plusQuantity < currQuantity) {
+      data[index].quantity = +plusQuantity;
     }
     localStorage.setItem("items", JSON.stringify(data));
     this.changeStateProductChoosed();
@@ -193,37 +219,135 @@ export default class FormAddNewOrder extends Component {
     return totalPrice;
   };
 
+  calPromotionPrice = () => {
+    let promotion = this.state.promotion || 0;
+    let totalPrice = this.calTotalPrice();
+    let promotionPrice = totalPrice - (totalPrice / 100) * promotion;
+    return promotionPrice;
+  };
+
+  checkCustomer = (idCus, promotion) => {
+    this.setState({
+      idCus,
+      promotion
+    });
+  };
+
+  checkValidAddNewCus = () => {
+    const { name, birthday, address, phoneNumber, errors } = this.state;
+    console.log("name: ", name);
+    if (!name) {
+      console.log("rỗng nè");
+      errors.push("Customer's name is required!");
+    }
+    if (!birthday) {
+      errors.push("Customer's birthday is required!");
+    }
+    if (!address) {
+      errors.push("Customer's address is required!");
+    }
+    if (!phoneNumber) {
+      errors.push("Customer's phone number is required!");
+    }
+    if (errors.length > 0) {
+      this.setState(prevState => ({
+        ...prevState,
+        errors
+      }));
+      return 0;
+    }
+
+    return 1;
+  };
+
+  checkValidChooseMember = () => {
+    const { idCus } = this.state;
+    let errors = [];
+    if (!idCus || idCus === "") {
+      errors.push("Please choose customer!!");
+    }
+    if (errors.length > 0) {
+      this.setState({
+        errors
+      });
+      return 0;
+    }
+    return 1;
+  };
+
+  changeQuantityWhenAddOrder = carts => {
+    const { listProducts } = this.props;
+    carts.map(item => {
+      let product = listProducts.find(product => product.id === item.id);
+
+      product.quantity -= item.quantity;
+
+      this.props.update("products", product);
+      return "";
+    });
+  };
+
   addNewOrder = () => {
-    let products = JSON.parse(localStorage.getItem("items")) || [];
+    let carts = JSON.parse(localStorage.getItem("items")) || [];
+    const { name, address, phoneNumber, birthday, isMember } = this.state;
+    let score = Math.floor(this.calTotalPrice() / 200000);
     let date = new Date();
     let orderDate =
-      date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    const { name, address, phoneNumber, birthday, isMember } = this.state;
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
     let infoOrder = {
       orderDate: orderDate,
-      amount: this.calTotalPrice(),
-      products
+      amount: this.calPromotionPrice(),
+      products: carts
     };
+
     if (isMember === "normal") {
       this.props.addNew("orders", {
         ...infoOrder
       });
+      this.changeQuantityWhenAddOrder(carts);
+      localStorage.clear();
     }
+
     if (isMember === "addNew") {
-      let idCus = this.props.addNew("customers", {
-        name,
-        address,
-        phoneNumber,
-        birthday
-      });
-      this.props.addNew("orders", {
-        ...infoOrder,
-        idCus
-      });
+      if (this.checkValidAddNewCus()) {
+        let idCus = this.props.addNew("customers", {
+          name,
+          address,
+          phoneNumber,
+          birthday,
+          score
+        });
+        this.props.addNew("orders", {
+          ...infoOrder,
+          idCus
+        });
+
+        this.changeQuantityWhenAddOrder(carts);
+        localStorage.clear();
+      }
     }
-    localStorage.clear();
+
+    if (isMember === "member") {
+      if (this.checkValidChooseMember()) {
+        const { customers } = this.props;
+        const { idCus } = this.state;
+        let customer = customers.find(item => item.id === idCus);
+        let newScore = customer.score + score;
+        this.props.addNew("orders", {
+          ...infoOrder,
+          idCus
+        });
+        this.props.update("customers", { ...customer, score: newScore });
+        this.changeQuantityWhenAddOrder(carts);
+        localStorage.clear();
+      }
+    }
+  };
+
+  closeError = () => {
     this.setState({
-      isOpenForm: false
+      errors: []
     });
   };
 
@@ -238,7 +362,7 @@ export default class FormAddNewOrder extends Component {
     } = this.state;
     const { listProducts } = this.props;
 
-    const totalPrice = this.calTotalPrice();
+    const totalPrice = this.calPromotionPrice();
     return (
       <div>
         <div className="panel panel-default">
@@ -257,11 +381,7 @@ export default class FormAddNewOrder extends Component {
                 <>
                   <div className="col-md-1" />
                   <div className="alert alert-danger col-md-10">
-                    <a
-                      className="close"
-                      onClick={this.closeError}
-                      href="gg.com"
-                    >
+                    <a className="close" onClick={this.closeError}>
                       ×
                     </a>
                     <ul>
@@ -466,6 +586,7 @@ export default class FormAddNewOrder extends Component {
                       BACK
                     </button>
                     <button
+                      type="button"
                       className="btn btn-form offset-md-10"
                       onClick={this.addNewOrder}
                     >

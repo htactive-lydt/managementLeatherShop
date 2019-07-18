@@ -1101,3 +1101,11 @@ mark,
 .search-customer{
   margin-top: 30px;
 }
+
+input[type='radio']{
+  width: 25px;
+}
+
+.deleted{
+  background-color:#ff751a;
+}

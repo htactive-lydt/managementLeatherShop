@@ -2,7 +2,7 @@ import React from "react";
 import CustomerListItem from "./CustomerListItem";
 
 export default function CustomerList(props) {
-  const { deleteItem, update, customers } = props;
+  const { deleteItem, update, customers, undoDelete } = props;
   let listItems = customers.map((item, index) => (
     <CustomerListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function CustomerList(props) {
       index={index}
       deleteItem={deleteItem}
       update={update}
+      undoDelete={undoDelete}
     />
   ));
   return (

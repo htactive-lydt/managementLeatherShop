@@ -35,14 +35,29 @@ export default class CustomerListItem extends Component {
   };
 
   deleteItem = () => {
-    this.props.deleteItem("customers", this.state.updateCustomer.id);
+    this.props.deleteItem("customers", this.state.updateCustomer);
   };
 
+  undoDelete = () => {
+    this.props.undoDelete("customers", this.state.updateCustomer);
+  }
+
   render() {
-    const { name, birthday, address, phoneNumber, score } = this.props.item;
+    const {
+      name,
+      birthday,
+      address,
+      phoneNumber,
+      score,
+      deleteAt
+    } = this.props.item;
     const { isUpdating } = this.state;
     return (
-      <tr className={`${isUpdating ? "" : "disable"}`}>
+      <tr
+        className={`${isUpdating ? "" : "disable"} ${
+          deleteAt ? "deleted" : ""
+        }`}
+      >
         <td>{this.props.index + 1}</td>
         <td>
           <input
@@ -62,7 +77,7 @@ export default class CustomerListItem extends Component {
             onChange={this.handleChange}
           />
         </td>
-        <td>
+        <td width="150px">
           <input
             type="text"
             className="form-control"
@@ -90,40 +105,63 @@ export default class CustomerListItem extends Component {
           />
         </td>
         <td>
-          {isUpdating ? (
-            <span>
-              <button
-                className="btn btn-success btn-control"
-                onClick={this.saveUpdate}
-              >
-                <i className="fa fa-floppy-o" />
-              </button>
-              <button
-                className="btn btn-secondary btn-control"
-                onClick={this.hanleUpdate}
-              >
-                <i className="fa fa-ban" />
-              </button>
-            </span>
+          {!deleteAt ? (
+            isUpdating ? (
+              <>
+                <span>
+                  <button
+                    className="btn btn-success btn-control"
+                    onClick={this.saveUpdate}
+                  >
+                    <i className="fa fa-floppy-o" />
+                  </button>
+                  <button
+                    className="btn btn-secondary btn-control"
+                    onClick={this.hanleUpdate}
+                  >
+                    <i className="fa fa-ban" />
+                  </button>
+                </span>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    window.confirm("Do you want to delete this task?")
+                      ? this.deleteItem()
+                      : ""
+                  }
+                >
+                  <i className="fa fa-trash-o" />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="btn btn-warning margin btn-control"
+                  onClick={this.hanleUpdate}
+                >
+                  <i className="fa fa-pencil" />
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    window.confirm("Do you want to delete this task?")
+                      ? this.deleteItem()
+                      : ""
+                  }
+                >
+                  <i className="fa fa-trash-o" />
+                </button>
+                &nbsp;
+              </>
+            )
           ) : (
             <button
               className="btn btn-warning margin btn-control"
-              onClick={this.hanleUpdate}
+              onClick={this.undoDelete}
             >
-              <i className="fa fa-pencil" />
+              <i className="fa fa-undo" />
             </button>
           )}
-          <button
-            className="btn btn-danger"
-            onClick={() =>
-              window.confirm("Do you want to delete this task?")
-                ? this.deleteItem()
-                : ""
-            }
-          >
-            <i className="fa fa-trash-o" />
-          </button>
-          &nbsp;
         </td>
       </tr>
     );

@@ -7,17 +7,17 @@ export default function ProductChoosedItem(props) {
   function plusQuantity(event) {
     event.preventDefault();
 
-    props.changeQuantity(props.item.id, 0, "plus");
+    props.changeQuantity(props.item, 0, "plus");
   }
 
   function minusQuantity(event) {
     event.preventDefault();
 
-    props.changeQuantity(props.item.id, 0, "minus");
+    props.changeQuantity(props.item, 0, "minus");
   }
 
   function handleChangeQuantity(event) {
-    props.changeQuantity(props.item.id, event.target.value);
+    props.changeQuantity(props.item, event.target.value);
   }
 
   function deleteCart(event) {

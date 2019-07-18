@@ -35,14 +35,19 @@ export default class OrderListItem extends Component {
   };
 
   deleteItem = () => {
-    this.props.deleteItem("orders", this.state.updateOrder.id);
+    this.props.deleteItem("orders", this.state.updateOrder);
   };
+
+  undoDelete = () => {
+    this.props.undoDelete("orders", this.state.updateOrder);
+  }
 
   render() {
     const {item, customers, listProducts} = this.props;
     
-    const { products, orderDate, amount, idCus } = item;
+    const { products, orderDate, amount, idCus, deleteAt } = item;
     let nameCustomer = "Guest";
+    
     if(idCus){
       let customer = customers.find(item => item.id === idCus);
       nameCustomer = customer.name;
@@ -54,7 +59,7 @@ export default class OrderListItem extends Component {
       return <p key={item.id}>{name} &nbsp; x &nbsp; {item.quantity}</p>
     })
     return (
-      <tr className={`${isUpdating ? "" : "disable"}`}>
+      <tr className={`${isUpdating ? "" : "disable"} ${deleteAt ? "deleted" : ""} `}>
         <td>{this.props.index + 1}</td>
         <td>{nameCustomer}</td>
         <td>{orderDate}</td>
@@ -63,40 +68,64 @@ export default class OrderListItem extends Component {
         </td>
         <td>{amount}</td>
         <td>
-          {isUpdating ? (
-            <span>
-              <button
-                className="btn btn-success btn-control"
-                onClick={this.saveUpdate}
-              >
-                <i className="fa fa-floppy-o" />
-              </button>
-              <button
-                className="btn btn-secondary btn-control"
-                onClick={this.hanleUpdate}
-              >
-                <i className="fa fa-ban" />
-              </button>
-            </span>
+          
+        {!deleteAt ? (
+            isUpdating ? (
+              <>
+                <span>
+                  <button
+                    className="btn btn-success btn-control"
+                    onClick={this.saveUpdate}
+                  >
+                    <i className="fa fa-floppy-o" />
+                  </button>
+                  <button
+                    className="btn btn-secondary btn-control"
+                    onClick={this.hanleUpdate}
+                  >
+                    <i className="fa fa-ban" />
+                  </button>
+                </span>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    window.confirm("Do you want to delete this task?")
+                      ? this.deleteItem()
+                      : ""
+                  }
+                >
+                  <i className="fa fa-trash-o" />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="btn btn-warning margin btn-control"
+                  onClick={this.hanleUpdate}
+                >
+                  <i className="fa fa-pencil" />
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    window.confirm("Do you want to delete this task?")
+                      ? this.deleteItem()
+                      : ""
+                  }
+                >
+                  <i className="fa fa-trash-o" />
+                </button>
+                &nbsp;
+              </>
+            )
           ) : (
             <button
               className="btn btn-warning margin btn-control"
-              onClick={this.hanleUpdate}
+              onClick={this.undoDelete}
             >
-              <i className="fa fa-pencil" />
+              <i className="fa fa-undo" />
             </button>
           )}
-          <button
-            className="btn btn-danger"
-            onClick={() =>
-              window.confirm("Do you want to delete this task?")
-                ? this.deleteItem()
-                : ""
-            }
-          >
-            <i className="fa fa-trash-o" />
-          </button>
-          &nbsp;
         </td>
       </tr>
     );

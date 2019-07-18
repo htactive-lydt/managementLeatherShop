@@ -20,7 +20,6 @@ export default class FormAddNewCustomer extends Component {
   };
 
   closeError = () => {
-    console.log("Ly");
     this.setState({
       errors: []
     });

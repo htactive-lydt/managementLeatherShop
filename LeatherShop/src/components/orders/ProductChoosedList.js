@@ -5,16 +5,17 @@ export default function ProductChoosedList(props) {
   const {listProducts, productChoosed, step} = props;
   let productChoosedList = "";
 
-  if (productChoosed) {
+  if (productChoosed.length > 0) {
     productChoosedList = productChoosed.map(cartItem => {
       const { id, quantity } = cartItem;
-      let { name, priceOut, image } = listProducts.find(product => product.id === id);
+      let { name, priceOut, image, quantity: currQuantity} = listProducts.find(product => product.id === id);
       let item = {
         id,
         quantity,
         name,
         priceOut,
-        image
+        image,
+        currQuantity
       };
       return (
         <ProductChoosedItem

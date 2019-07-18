@@ -2,7 +2,7 @@ import React from "react";
 import OrderListItem from "./OrderListItem";
 
 export default function OrderList(props) {
-  const { orders, listProducts, customers, deleteItem} = props;
+  const { orders, listProducts, customers, deleteItem, undoDelete} = props;
   let orderList = "";
   if (orders.length > 0) {
     orderList = orders.map((item, index) => {
@@ -13,6 +13,7 @@ export default function OrderList(props) {
           customers={customers}
           index={index}
           deleteItem={deleteItem}
+          undoDelete={undoDelete}
           key={item.id}
         />
       );
@@ -21,7 +22,7 @@ export default function OrderList(props) {
   return (
     <div className="panel panel-primary">
       <div className="panel-heading">
-        <h3 className="panel-title">LIST OF CUSTOMER</h3>
+        <h3 className="panel-title">LIST OF ORDER</h3>
       </div>
       <div className="panel-body">
         <div className="table-responsive">
