@@ -26,7 +26,7 @@ class AppBase extends React.Component {
       categories: [],
       products: [],
       orders: [],
-      user: ""
+      user: null
     };
   }
 
@@ -114,11 +114,20 @@ class AppBase extends React.Component {
     tableCall.set(rowUpdateSnapshot);
   };
 
-  deleteItem = (table, id) => {
+  deleteItem = (table, rowUpdate) => {
+    const { id, ...rowUpdateSnapshot } = rowUpdate;
+    let date = new Date();
+    let deleteDate =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.remove();
+    tableCall.set({...rowUpdateSnapshot, deleteAt: deleteDate});
   };
 
+  undoDelete = (table, rowUpdate) => {
+    const { id, ...rowUpdateSnapshot } = rowUpdate;
+    let tableCall = this.getTableCallUpdate(table, id);
+    tableCall.set({...rowUpdateSnapshot, deleteAt: ""});
+  }
   componentDidMount() {
     this.getData("users");
     this.getData("customers");
@@ -126,7 +135,20 @@ class AppBase extends React.Component {
     this.getData("categories");
     this.getData("products");
     this.getData("orders");
+    this.authListener();
   }
+
+  authListener = () => {
+    this.props.firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem("user", user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem("user");
+      }
+    });
+  };
 
   render() {
     const {
@@ -135,86 +157,98 @@ class AppBase extends React.Component {
       employees,
       categories,
       products,
-      orders
+      orders,
+      user
     } = this.state;
-    // if(this.state.user){
-    return (
-      <Router>
-        <Header />
-        <LeftMenu />
-        <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route
-            path="/users"
-            component={() => (
-              <Users
-                users={users}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/customers"
-            component={() => (
-              <Customers
-                customers={customers}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/employees"
-            component={() => (
-              <Employees
-                employees={employees}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
-          <Route
-            path="/categories"
-            component={() => (
-              <Categories
-                categories={categories}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/products"
-            component={() => (
-              <Products
-                products={products}
-                categories={categories}
-                addNew={this.addNew}
-                update={this.update}
-                deleteItem={this.deleteItem}
-              />
-            )}
-          />
-          <Route
-            path="/orders"
-            component={() => (
-              <Orders
-                products={products}
-                orders={orders}
-                addNew={this.addNew}
-                update={this.update}
-              />
-            )}
-          />
+    if (user) {
+      return (
+        <Router>
+          <Header />
+          <LeftMenu />
+          <Switch>
+            <Route exact path="/" component={() => <Home />} />
+            <Route
+              path="/users"
+              component={() => (
+                <Users
+                  users={users}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                  undoDelete={this.undoDelete}
+                />
+              )}
+            />
+            <Route
+              path="/customers"
+              component={() => (
+                <Customers
+                  customers={customers}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/employees"
+              component={() => (
+                <Employees
+                  employees={employees}
+                  addNew={this.addNew}
+                  update={this.update}
+                  undoDelete={this.undoDelete}
+                  deleteItem={this.deleteItem}
+                />
+              )}
+            />
+            <Route
+              path="/categories"
+              component={() => (
+                <Categories
+                  categories={categories}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                  undoDelete={this.undoDelete}
+                />
+              )}
+            />
+            <Route
+              path="/products"
+              component={() => (
+                <Products
+                  products={products}
+                  categories={categories}
+                  addNew={this.addNew}
+                  update={this.update}
+                  deleteItem={this.deleteItem}
+                  undoDelete={this.undoDelete}
+                />
+              )}
+            />
+            <Route
+              path="/orders"
+              component={() => (
+                <Orders
+                  products={products}
+                  orders={orders}
+                  addNew={this.addNew}
+                  update={this.update}
+                />
+              )}
+            />
+          </Switch>
+          <Footer />
+        </Router>
+      );
+    } else {
+      return (
+        <Router>
           <Route path="/login" component={() => <Login users={users} />} />
-        </Switch>
-        <Footer />
-      </Router>
-    );
+        </Router>
+      );
+    }
   }
 }
 

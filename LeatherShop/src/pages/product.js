@@ -3,7 +3,7 @@ import {FormAddNewProduct} from "../components/products/FormAddProduct";
 import ProductList from "../components/products/ProductList";
 
 const Products = props => {
-  const { addNew, update, categories, products, deleteItem } = props;
+  const { addNew, update, categories, products, deleteItem, undoDelete } = props;
   return (
     <>
       <main className="app-content">
@@ -17,6 +17,7 @@ const Products = props => {
           categories={categories}
           update={update}
           deleteItem={deleteItem}
+          undoDelete={undoDelete}
         />
       </main>
     </>

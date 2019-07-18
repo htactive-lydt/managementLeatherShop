@@ -2,7 +2,7 @@ import React from "react";
 import UserListItem from "./UserListItem";
 
 export default function UserList(props) {
-  const { deleteItem, update, users } = props;
+  const { deleteItem, update, users, undoDelete } = props;
   let listItems = users.map((item, index) => (
     <UserListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function UserList(props) {
       index={index}
       deleteItem={deleteItem}
       update={update}
+      undoDelete={undoDelete}
     />
   ));
   return (

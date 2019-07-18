@@ -34,27 +34,29 @@ export default class EmployeeListItem extends React.Component {
   };
 
   deleteItem = () => {
-    this.props.deleteItem("employees", this.state.updateEmployee.id);
+    this.props.deleteItem("employees", this.state.updateEmployee);
+  };
+
+  undoDelete = () => {
+    this.props.undoDelete("employees", this.state.updateEmployee);
   };
 
   render() {
     const { isUpdating } = this.state;
-    const {
-      name,
-      address,
-      email,
-      idCard,
-      salary
-    } = this.props.item;
+    const { name, address, email, idCard, salary, deleteAt } = this.props.item;
 
     return (
       <>
-        <tr>
-            <td>{this.props.index+1}</td>
+        <tr
+          className={`${isUpdating ? "" : "disable"} ${
+            deleteAt ? "deleted" : ""
+          }`}
+        >
+          <td>{this.props.index + 1}</td>
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="name"
               defaultValue={name}
               onChange={this.handleChange}
@@ -63,7 +65,7 @@ export default class EmployeeListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="address"
               defaultValue={address}
               onChange={this.handleChange}
@@ -72,7 +74,7 @@ export default class EmployeeListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="idCard"
               defaultValue={idCard}
               onChange={this.handleChange}
@@ -81,7 +83,7 @@ export default class EmployeeListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="email"
               defaultValue={email}
               onChange={this.handleChange}
@@ -90,47 +92,71 @@ export default class EmployeeListItem extends React.Component {
           <td>
             <input
               type="text"
-              className={`form-control ${isUpdating ? "" : "disable"}`}
+              className="form-control"
               name="salary"
               defaultValue={salary}
               onChange={this.handleChange}
             />
           </td>
           <td width="200px">
-            {isUpdating ? (
-              <span>
-                <button
-                  className="btn btn-success btn-control"
-                  onClick={this.saveUpdate}
-                >
-                  <i className="fa fa-floppy-o" />
-                </button>
-                <button
-                  className="btn btn-secondary btn-control"
-                  onClick={this.hanleUpdate}
-                >
-                  <i className="fa fa-ban" />
-                </button>
-              </span>
+            {!deleteAt ? (
+              isUpdating ? (
+                <>
+                  <span>
+                    <button
+                      className="btn btn-success btn-control"
+                      onClick={this.saveUpdate}
+                    >
+                      <i className="fa fa-floppy-o" />
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-control"
+                      onClick={this.hanleUpdate}
+                    >
+                      <i className="fa fa-ban" />
+                    </button>
+                  </span>
+
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      window.confirm("Do you want to delete this task?")
+                        ? this.deleteItem()
+                        : ""
+                    }
+                  >
+                    <i className="fa fa-trash-o" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn btn-warning margin btn-control"
+                    onClick={this.hanleUpdate}
+                  >
+                    <i className="fa fa-pencil" />
+                  </button>
+
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      window.confirm("Do you want to delete this task?")
+                        ? this.deleteItem()
+                        : ""
+                    }
+                  >
+                    <i className="fa fa-trash-o" />
+                  </button>
+                </>
+              )
             ) : (
               <button
                 className="btn btn-warning margin btn-control"
-                onClick={this.hanleUpdate}
+                onClick={this.undoDelete}
               >
-                <i className="fa fa-pencil" />
+                <i className="fa fa-undo" />
               </button>
             )}
-            <button
-              className="btn btn-danger"
-              onClick={() =>
-                window.confirm("Do you want to delete this task?")
-                  ? this.deleteItem()
-                  : ""
-              }
-            >
-              <i className="fa fa-trash-o" />
-            </button>
-            &nbsp;
           </td>
         </tr>
       </>

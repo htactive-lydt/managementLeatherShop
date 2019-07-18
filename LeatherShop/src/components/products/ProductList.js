@@ -2,7 +2,7 @@ import React from "react";
 import ProductListItem from "./ProductListItem";
 
 export default function ProductList(props) {
-  const { deleteItem, update, products, categories} = props;
+  const { deleteItem, update, products, categories, undoDelete} = props;
   let listItems = products.map(item => (
     <ProductListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function ProductList(props) {
       deleteItem={deleteItem}
       update={update}
       categories={categories}
+      undoDelete={undoDelete}
     />
   ));
   return (

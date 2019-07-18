@@ -34,7 +34,10 @@ export default class CategoryListItem extends React.Component {
   };
 
   deleteItem = () => {
-    this.props.deleteItem("products", this.state.updateProduct.id);
+    this.props.deleteItem("products", this.state.updateProduct);
+  };
+  undoDelete = () => {
+    this.props.undoDelete("products", this.state.updateProduct);
   };
 
   render() {
@@ -49,13 +52,18 @@ export default class CategoryListItem extends React.Component {
       priceOut,
       pricePromotion,
       quantity,
+      deleteAt,
       key
     } = this.props.item;
 
     return (
       <>
-        <tr className={`${isUpdating ? "" : "disable"}`}>
-          <td key={key} >
+        <tr
+          className={`${isUpdating ? "" : "disable"} ${
+            deleteAt ? "deleted" : ""
+          }`}
+        >
+          <td key={key}>
             <select
               onChange={this.handleChange}
               defaultValue={cateID}
@@ -91,7 +99,7 @@ export default class CategoryListItem extends React.Component {
           <td width="30px">
             <input
               type="date"
-              className="form-control" 
+              className="form-control"
               name="dateAdd"
               defaultValue={dateAdd}
               onChange={this.handleChange}
@@ -100,7 +108,7 @@ export default class CategoryListItem extends React.Component {
           <td>
             <input
               type="text"
-              className="form-control" 
+              className="form-control"
               name="priceIn"
               defaultValue={priceIn}
               onChange={this.handleChange}
@@ -109,7 +117,7 @@ export default class CategoryListItem extends React.Component {
           <td>
             <input
               type="text"
-              className="form-control" 
+              className="form-control"
               name="priceOut"
               defaultValue={priceOut}
               onChange={this.handleChange}
@@ -118,7 +126,7 @@ export default class CategoryListItem extends React.Component {
           <td>
             <input
               type="text"
-              className="form-control" 
+              className="form-control"
               name="pricePromotion"
               defaultValue={pricePromotion}
               onChange={this.handleChange}
@@ -127,47 +135,72 @@ export default class CategoryListItem extends React.Component {
           <td width="50px">
             <input
               type="number"
-              className="form-control" 
+              className="form-control"
               name="quantity"
               defaultValue={quantity}
               onChange={this.handleChange}
+              min="0"
             />
           </td>
           <td width="200px">
-            {isUpdating ? (
-              <span>
-                <button
-                  className="btn btn-success btn-control"
-                  onClick={this.saveUpdate}
-                >
-                  <i className="fa fa-floppy-o" />
-                </button>
-                <button
-                  className="btn btn-secondary btn-control"
-                  onClick={this.hanleUpdate}
-                >
-                  <i className="fa fa-ban" />
-                </button>
-              </span>
+            {!deleteAt ? (
+              isUpdating ? (
+                <>
+                  <span>
+                    <button
+                      className="btn btn-success btn-control"
+                      onClick={this.saveUpdate}
+                    >
+                      <i className="fa fa-floppy-o" />
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-control"
+                      onClick={this.hanleUpdate}
+                    >
+                      <i className="fa fa-ban" />
+                    </button>
+                  </span>
+
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      window.confirm("Do you want to delete this task?")
+                        ? this.deleteItem()
+                        : ""
+                    }
+                  >
+                    <i className="fa fa-trash-o" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn btn-warning margin btn-control"
+                    onClick={this.hanleUpdate}
+                  >
+                    <i className="fa fa-pencil" />
+                  </button>
+
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      window.confirm("Do you want to delete this task?")
+                        ? this.deleteItem()
+                        : ""
+                    }
+                  >
+                    <i className="fa fa-trash-o" />
+                  </button>
+                </>
+              )
             ) : (
               <button
                 className="btn btn-warning margin btn-control"
-                onClick={this.hanleUpdate}
+                onClick={this.undoDelete}
               >
-                <i className="fa fa-pencil" />
+                <i className="fa fa-undo" />
               </button>
             )}
-            <button
-              className="btn btn-danger"
-              onClick={() =>
-                window.confirm("Do you want to delete this task?")
-                  ? this.deleteItem()
-                  : ""
-              }
-            >
-              <i className="fa fa-trash-o" />
-            </button>
-            &nbsp;
           </td>
         </tr>
       </>

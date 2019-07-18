@@ -2,7 +2,7 @@ import React from "react";
 import CategoryListItem from "./CategoryListItem";
 
 export default function CustomerList(props) {
-  const { deleteItem, update, categories } = props;
+  const { deleteItem, update, categories, undoDelete } = props;
   let listItems = categories.map((item, index) => (
     <CategoryListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function CustomerList(props) {
       index={index}
       deleteItem={deleteItem}
       update={update}
+      undoDelete={undoDelete}
     />
   ));
   return (

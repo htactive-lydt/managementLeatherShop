@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class FormAddnewUser extends Component {
   state = {
@@ -91,13 +92,13 @@ export default class FormAddnewUser extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a
+                      <Link
+                        to="/users"
                         className="close"
                         onClick={this.closeError}
-                        href="gg.com"
                       >
                         ×
-                      </a>
+                      </Link>
                       <ul>
                         {errors.map((item, index) => (
                           <li key={index}>{item}</li>

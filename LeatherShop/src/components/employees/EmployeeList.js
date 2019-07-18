@@ -2,7 +2,7 @@ import React from "react";
 import EmployeeListItem from "./EmployeeListItem";
 
 export default function EmployeeList(props) {
-  const { deleteItem, update, employees } = props;
+  const { deleteItem, update, employees, undoDelete } = props;
   let listItems = employees.map((item, index) => (
     <EmployeeListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function EmployeeList(props) {
       index={index}
       deleteItem={deleteItem}
       update={update}
+      undoDelete={undoDelete}
     />
   ));
   return (

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class FormAddNewEmployee extends Component {
   state = {
@@ -41,8 +42,8 @@ export default class FormAddNewEmployee extends Component {
       errors.push("Customer's phone number is required!");
     }
     if (!salary) {
-        errors.push("Customer's phone number is required!");
-      }
+      errors.push("Customer's phone number is required!");
+    }
     if (errors.length > 0) {
       this.setState({
         errors
@@ -55,7 +56,7 @@ export default class FormAddNewEmployee extends Component {
   addnewEmployee = event => {
     event.preventDefault();
     if (this.checkValid()) {
-      this.props.addNew("customers", this.state.newEmployee);
+      this.props.addNew("employees", this.state.newEmployee);
       this.setState({
         isOpenForm: false,
         newEmployee: {
@@ -103,9 +104,13 @@ export default class FormAddNewEmployee extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError} href="gg.com">
+                      <Link
+                        to="/employees"
+                        className="close"
+                        onClick={this.closeError}
+                      >
                         ×
-                      </a>
+                      </Link>
                       <ul>
                         {errors.map((item, index) => (
                           <li key={index}>{item}</li>

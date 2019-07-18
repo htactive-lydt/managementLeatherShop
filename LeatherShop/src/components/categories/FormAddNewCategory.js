@@ -1,5 +1,5 @@
-
 import React from "react";
+import { Link } from "react-router-dom";
 
 class FormAddNewCategories extends React.Component {
   state = {
@@ -79,9 +79,13 @@ class FormAddNewCategories extends React.Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError} href="google.com">
+                      <Link
+                        to="/categories"
+                        className="close"
+                        onClick={this.closeError}
+                      >
                         ×
-                      </a>
+                      </Link>
                       <ul>
                         {errors.map((item, index) => (
                           <li key={index}>{item}</li>

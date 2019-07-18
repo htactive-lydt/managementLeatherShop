@@ -2,7 +2,7 @@ import React from "react";
 import { FormAddNewCustomer, CustomerList } from "../components/customers";
 
 const Customers = props => {
-  const { addNew, update, customers, deleteItem } = props;
+  const { addNew, update, customers, deleteItem, undoDelete } = props;
   return (
     <>
       <main className="app-content">
@@ -12,6 +12,7 @@ const Customers = props => {
             customers={customers}
             update={update}
             deleteItem={deleteItem}
+            undoDelete={undoDelete}
           />
         </div>
       </main>

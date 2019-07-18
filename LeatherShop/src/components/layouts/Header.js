@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withFirebase } from "../Firebase";
 
-const Header = () => {
+const HeaderBase = props => {
+  const logout = () => {
+    props.firebase.auth.signOut();
+  };
+
   return (
     <header className="app-header">
       <Link to="/" className="app-header__logo">
@@ -29,12 +34,16 @@ const Header = () => {
         <li className="app-nav__item">
           <i className="fa fa-bell-o fa-lg" />
         </li>
-        <li className="app-nav__item">
-          <i className="fa fa-user fa-lg"> </i>
+        <li className="app-nav__item" >
+          <Link to="/login" onClick={logout} >
+            <i className="fa fa-sign-out logout fa-1x"/>
+          </Link>
         </li>
       </ul>
     </header>
   );
 };
+
+const Header = withFirebase(HeaderBase);
 
 export default Header;
