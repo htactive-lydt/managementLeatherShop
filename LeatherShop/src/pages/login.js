@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { withFirebase } from "../components/Firebase";
+import { FormErrors } from './FormErrors';
+
 
 class LoginBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      formErrors: { email: "", password: "" },
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
     };
   }
 
@@ -15,10 +21,47 @@ class LoginBase extends Component {
     const value = event.target.value;
     console.log(value);
     console.log(name);
-    this.setState({
-      [name]: value
+    this.setState({ [name]: value }, () => {
+      this.validateField(name, value);
     });
   };
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+
+    switch (fieldName) {
+      case "email":
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? "" : " is invalid";
+        break;
+      case "password":
+        passwordValid = value.length >= 6;
+        fieldValidationErrors.password = passwordValid ? "" : " is too short";
+        break;
+      default:
+        break;
+    }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        emailValid: emailValid,
+        passwordValid: passwordValid
+      },
+      this.validateForm
+    );
+  }
+
+  validateForm() {
+    this.setState({
+      formValid: this.state.emailValid && this.state.passwordValid
+    });
+  }
+
+  errorClass(error) {
+    return error.length === 0 ? "" : "has-error";
+  }
 
   loginClick = event => {
     const { email, password } = this.state;
@@ -52,9 +95,12 @@ class LoginBase extends Component {
             <div className="card-header">
               <h3>Sign In</h3>
             </div>
+            <div className="card-body" disabled={!this.state.formValid}>
+              <FormErrors formErrors={this.state.formErrors} />
+            </div>
             <div className="card-body">
               <form>
-                <div className="input-group form-group">
+                <div className={`input-group form-group ${this.errorClass(this.state.formErrors.email)}`}>
                   <div className="input-group-prepend">
                     <span className="input-group-text">
                       <i className="fa fa-envelope-o" aria-hidden="true" />
@@ -69,7 +115,7 @@ class LoginBase extends Component {
                     placeholder="Enter email"
                   />
                 </div>
-                <div className="input-group form-group">
+                <div className={`input-group form-group ${this.errorClass(this.state.formErrors.password)}`}>
                   <div className="input-group-prepend">
                     <span className="input-group-text">
                       <i className="fa fa-key" aria-hidden="true" />
@@ -92,13 +138,15 @@ class LoginBase extends Component {
                     type="submit"
                     className="btn float-left login_btn "
                     onClick={this.loginClick}
+                    disabled={!this.state.formValid}
                     value="Log In"
                   />
                 </div>
                 <div className="form-group">
                   <input
                     type="submit"
-                    className="btn float-right signup_btn "
+                    disabled={!this.state.formValid}
+                    className="btn float-right signup_btn " 
                     onClick={this.signupClick}
                     value="Sign Up"
                   />
