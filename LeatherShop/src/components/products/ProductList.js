@@ -2,7 +2,7 @@ import React from "react";
 import ProductListItem from "./ProductListItem";
 
 export default function ProductList(props) {
-  const { deleteItem, update, products, categories} = props;
+  const { deleteItem, update, products, categories, undoDelete} = props;
   let listItems = products.map(item => (
     <ProductListItem
       key={item.id}
@@ -10,6 +10,7 @@ export default function ProductList(props) {
       deleteItem={deleteItem}
       update={update}
       categories={categories}
+      undoDelete={undoDelete}
     />
   ));
   return (
@@ -22,11 +23,10 @@ export default function ProductList(props) {
           <table className="table table-bordered">
             <thead className="thead-light">
               <tr>
-                <th>CATE ID</th>
+                <th>CATE NAME</th>
                 <th>NAME PRODUCT</th>
                 <th>IMAGE</th>
                 <th>DATE ADD</th>
-                <th>DELETE AT</th>
                 <th>PRICE IN</th>
                 <th>PRICE OUT</th>
                 <th>PRICE PROMOTION</th>

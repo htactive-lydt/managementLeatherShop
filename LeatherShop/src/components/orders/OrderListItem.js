@@ -40,36 +40,45 @@ export default class OrderListItem extends Component {
 
   undoDelete = () => {
     this.props.undoDelete("orders", this.state.updateOrder);
-  }
+  };
 
   render() {
-    const {item, customers, listProducts} = this.props;
-    
+    const { item, customers, listProducts } = this.props;
+
     const { products, orderDate, amount, idCus, deleteAt } = item;
-    let nameCustomer = "Guest";
-    
-    if(idCus){
+    let nameCustomer = "";
+
+    if (idCus) {
       let customer = customers.find(item => item.id === idCus);
-      nameCustomer = customer.name;
+      if (customer) {
+        nameCustomer = customer.name;
+      }
+    }else {
+      nameCustomer="Guest"
     }
     const { isUpdating } = this.state;
 
     let productsOrder = products.map(item => {
-      let {name} = listProducts.find(product => product.id === item.id);
-      return <p key={item.id}>{name} &nbsp; x &nbsp; {item.quantity}</p>
-    })
+      let { name } = listProducts.find(product => product.id === item.id);
+      return (
+        <p key={item.id}>
+          {name} &nbsp; x &nbsp; {item.quantity}
+        </p>
+      );
+    });
     return (
-      <tr className={`${isUpdating ? "" : "disable"} ${deleteAt ? "deleted" : ""} `}>
+      <tr
+        className={`${isUpdating ? "" : "disable"} ${
+          deleteAt ? "deleted" : ""
+        } `}
+      >
         <td>{this.props.index + 1}</td>
         <td>{nameCustomer}</td>
         <td>{orderDate}</td>
-        <td>
-          {productsOrder}
-        </td>
+        <td>{productsOrder}</td>
         <td>{amount}</td>
         <td>
-          
-        {!deleteAt ? (
+          {!deleteAt ? (
             isUpdating ? (
               <>
                 <span>

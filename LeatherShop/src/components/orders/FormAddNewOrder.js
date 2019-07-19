@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import ProductSearchItem from "./ProductSearchItem";
 import ProductChoosedList from "./ProductChoosedList";
 import CustomerSearchItem from "./CustomerSearchItem";
@@ -77,14 +79,21 @@ export default class FormAddNewOrder extends Component {
     this.changeStateProductChoosed();
   };
 
+  getCart = () => {
+    return JSON.parse(localStorage.getItem("items")) || [];
+  };
+
   deleteCart = id => {
-    let data = JSON.parse(localStorage.getItem("items")) || [];
+    let data = this.getCart();
 
     let index = data.findIndex(item => item.id === id);
 
     data.splice(index, 1);
     localStorage.setItem("items", JSON.stringify(data));
     this.changeStateProductChoosed();
+    if (this.getCart().length <= 0) {
+      this.backStep();
+    }
   };
 
   handleOpenForm = () => {
@@ -235,9 +244,7 @@ export default class FormAddNewOrder extends Component {
 
   checkValidAddNewCus = () => {
     const { name, birthday, address, phoneNumber, errors } = this.state;
-    console.log("name: ", name);
     if (!name) {
-      console.log("rỗng nè");
       errors.push("Customer's name is required!");
     }
     if (!birthday) {
@@ -381,9 +388,9 @@ export default class FormAddNewOrder extends Component {
                 <>
                   <div className="col-md-1" />
                   <div className="alert alert-danger col-md-10">
-                    <a className="close" onClick={this.closeError}>
+                    <Link to="/orders" className="close" onClick={this.closeError}>
                       ×
-                    </a>
+                    </Link>
                     <ul>
                       {errors.map((item, index) => (
                         <li key={index}>{item}</li>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import  {withFirebase}  from "../Firebase";
+import { withFirebase } from "../Firebase";
+import { Link } from "react-router-dom";
 
 class FormAddProductBase extends Component {
   state = {
@@ -9,7 +10,7 @@ class FormAddProductBase extends Component {
       dateAdd: "",
       dateAt: "",
       description: "",
-      image: "",
+      image: null,
       name: "",
       priceIn: "",
       priceOut: "",
@@ -30,59 +31,8 @@ class FormAddProductBase extends Component {
   handleChangeImage = e => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      this.setState(
-        {image}
-      );
+      this.setState({ image });
     }
-  };
-
-  addNewProduct = event => {
-    const { image } = this.state;
-    console.log(image,"image")
-    const uploadTask = this.props.firebase.storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      error => {
-        console.log(error);
-      },
-      () => {
-        this.props.firebase.storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then(url => {
-            console.log("url", url);
-            this.setState({ url });
-          });
-      }
-    );
-    event.preventDefault();
-   
-      this.props.addNew("products", this.state.newProduct);
-      this.setState({
-        isOpenForm: false
-      });
-    
-  };
-  closeError = () => {
-    this.setState({
-      errors: []
-    });
-  };
-
-  handleChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    console.log(value);
-    console.log(name);
-
-    this.setState(prevState => ({
-      ...prevState,
-      newProduct: {
-        ...prevState.newProduct,
-        [name]: value
-      }
-    }));
   };
 
   checkValidate = () => {
@@ -90,23 +40,37 @@ class FormAddProductBase extends Component {
       cateID,
       dateAdd,
       description,
-      image,
       name,
       priceIn,
       priceOut,
       pricePromotion,
       quantity
-    } = this.state;
+    } = this.state.newProduct;
+    const {image} = this.state;
     let errors = [];
+    let date = new Date();
+    console.log("name", name);
+    let dateAddProduct =
+      date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    if (!name) {
+      errors.push("Product's name is required");
+    }
     if (!cateID) {
       errors.push("Category's name is required");
+    }
+    if (!image) {
+      errors.push("Product's image is required");
     }
     if (!dateAdd) {
       errors.push("Date add product is required");
     }
+    if (date < dateAddProduct) {
+      errors.push("Date add product must fdkjk");
+    }
     if (!description) {
       errors.push("Product's description is required");
     }
+  
     if (!priceIn) {
       errors.push("Product's price in is required");
     }
@@ -126,6 +90,66 @@ class FormAddProductBase extends Component {
       return 0;
     }
     return 1;
+  };
+
+  addNewProduct = event => {
+    event.preventDefault();
+    console.log(this.state.name);
+    if (this.checkValidate()) {
+      const { image } = this.state;
+      console.log("image 222222222222", image);
+      const uploadTask = this.props.firebase.storage
+        .ref(`images/${image.name}`)
+        .put(image);
+      console.log(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          this.setState({ progress });
+        },
+        error => {
+          console.log("error", error);
+        },
+        () => {
+          this.props.firebase.storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              console.log("url", url);
+
+              this.props.addNew("products", {
+                ...this.state.newProduct,
+                image: url
+              });
+            });
+        }
+      );
+    }
+  };
+
+  closeError = () => {
+    this.setState({
+      errors: []
+    });
+  };
+
+  handleChange = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    console.log(value);
+    console.log(name);
+
+    this.setState(prevState => ({
+      ...prevState,
+      newProduct: {
+        ...prevState.newProduct,
+        [name]: value
+      }
+    }));
   };
 
   render() {
@@ -151,9 +175,13 @@ class FormAddProductBase extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError} href="google.com">
+                      <Link
+                        to="/products"
+                        className="close"
+                        onClick={this.closeError}
+                      >
                         ×
-                      </a>
+                      </Link>
                       <ul>
                         {errors.map((item, index) => (
                           <li key={index}>{item}</li>
@@ -290,4 +318,4 @@ class FormAddProductBase extends Component {
 
 const FormAddNewProduct = withFirebase(FormAddProductBase);
 
-export {FormAddNewProduct};
+export { FormAddNewProduct };

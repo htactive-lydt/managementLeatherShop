@@ -11,6 +11,7 @@ import Orders from "./pages/order";
 import LeftMenu from "./components/layouts/LeftMenu";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
+import Login from "./pages/login";
 import { withFirebase } from "./components/Firebase";
 import IsLoading from "./components/layouts/IsLoading";
 
@@ -26,7 +27,8 @@ class AppBase extends React.Component {
       employees: [],
       categories: [],
       products: [],
-      orders: []
+      orders: [],
+      user: null
     };
   }
 
@@ -125,15 +127,14 @@ class AppBase extends React.Component {
     let deleteDate =
       date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.set({...rowUpdateSnapshot, deleteAt: deleteDate});
+    tableCall.set({ ...rowUpdateSnapshot, deleteAt: deleteDate });
   };
 
   undoDelete = (table, rowUpdate) => {
     const { id, ...rowUpdateSnapshot } = rowUpdate;
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.set({...rowUpdateSnapshot, deleteAt: ""});
-  }
-
+    tableCall.set({ ...rowUpdateSnapshot, deleteAt: "" });
+  };
   componentDidMount() {
     this.getData("users");
     this.getData("customers");
@@ -141,7 +142,20 @@ class AppBase extends React.Component {
     this.getData("categories");
     this.getData("products");
     this.getData("orders");
+    this.authListener();
   }
+
+  authListener = () => {
+    this.props.firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem("user", user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem("user");
+      }
+    });
+  };
 
   render() {
     const {
@@ -151,94 +165,111 @@ class AppBase extends React.Component {
       employees,
       categories,
       products,
-      orders
+      orders,
+      user
     } = this.state;
     return (
-      <Router>
-        <Header />
-        <LeftMenu />
-        {isLoaded ? (
-          <Switch>
-            <Route exact path="/" component={() => <Home />} />
-            <Route
-              path="/users"
-              component={() => (
-                <Users
-                  users={users}
-                  addNew={this.addNew}
-                  update={this.update}
-                />
-              )}
-            />
-            <Route
-              path="/customers"
-              component={() => (
-                <Customers
-                  customers={customers}
-                  undoDelete={this.undoDelete}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                />
-              )}
-            />
-            <Route
-              path="/employees"
-              component={() => (
-                <Employees
-                  employees={employees}
-                  addNew={this.addNew}
-                  update={this.update}
-                />
-              )}
-            />
-            <Route
-              path="/categories"
-              component={() => (
-                <Categories
-                  categories={categories}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                />
-              )}
-            />
-            <Route
-              path="/products"
-              component={() => (
-                <Products
-                  products={products}
-                  categories={categories}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                />
-              )}
-            />
-            <Route
-              path="/orders"
-              component={() => (
-                <Orders
-                  listProducts={products}
-                  orders={orders}
-                  customers={customers}
-                  addNew={this.addNew}
-                  deleteItem={this.deleteItem}
-                  update={this.update}
-                  undoDelete={this.undoDelete}
-                />
-              )}
-            />
-          </Switch>
-        ) : (
-          <IsLoading />
-        )}
+      <>
+        {user ? (
+          <Router>
+            <Header />
+            <LeftMenu />
+            {isLoaded ? (
+              <>
+                <Switch>
+                  <Route exact path="/" component={() => <Home />} />
+                  <Route
+                    path="/users"
+                    component={() => (
+                      <Users
+                        users={users}
+                        addNew={this.addNew}
+                        update={this.update}
+                        deleteItem={this.deleteItem}
+                        undoDelete={this.undoDelete}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/customers"
+                    component={() => (
+                      <Customers
+                        customers={customers}
+                        undoDelete={this.undoDelete}
+                        addNew={this.addNew}
+                        update={this.update}
+                        deleteItem={this.deleteItem}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/employees"
+                    component={() => (
+                      <Employees
+                        employees={employees}
+                        addNew={this.addNew}
+                        update={this.update}
+                        undoDelete={this.undoDelete}
+                        deleteItem={this.deleteItem}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/categories"
+                    component={() => (
+                      <Categories
+                        categories={categories}
+                        addNew={this.addNew}
+                        update={this.update}
+                        deleteItem={this.deleteItem}
+                        undoDelete={this.undoDelete}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/products"
+                    component={() => (
+                      <Products
+                        products={products}
+                        categories={categories}
+                        addNew={this.addNew}
+                        update={this.update}
+                        deleteItem={this.deleteItem}
+                        undoDelete={this.undoDelete}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/orders"
+                    component={() => (
+                      <Orders
+                        listProducts={products}
+                        orders={orders}
+                        customers={customers}
+                        addNew={this.addNew}
+                        deleteItem={this.deleteItem}
+                        update={this.update}
+                        undoDelete={this.undoDelete}
+                      />
+                    )}
+                  />
+                </Switch>
+              </>
+            ) : (
+              <IsLoading />
+            )}
 
-        <Footer />
-      </Router>
+            <Footer />
+          </Router>
+        ) : (
+          <Router>
+            <Route path="/" component={() => <Login users={users} />} />
+          </Router>
+        )}
+        )
+      </>
     );
   }
 }
-
 const App = withFirebase(AppBase);
 export default App;
