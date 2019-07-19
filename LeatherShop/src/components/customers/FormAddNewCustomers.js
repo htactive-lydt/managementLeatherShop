@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class FormAddNewCustomer extends Component {
   state = {
@@ -7,7 +8,8 @@ export default class FormAddNewCustomer extends Component {
       name: "",
       birthday: "",
       phoneNumber: "",
-      address: ""
+      address: "",
+      score: 0
     },
     errors: []
   };
@@ -19,7 +21,6 @@ export default class FormAddNewCustomer extends Component {
   };
 
   closeError = () => {
-    console.log("Ly");
     this.setState({
       errors: []
     });
@@ -59,7 +60,8 @@ export default class FormAddNewCustomer extends Component {
           name: "",
           birthday: "",
           phoneNumber: "",
-          address: ""
+          address: "",
+          score: 0
         }
       });
     }
@@ -99,9 +101,13 @@ export default class FormAddNewCustomer extends Component {
                   <>
                     <div className="col-md-1" />
                     <div className="alert alert-danger col-md-10">
-                      <a className="close" onClick={this.closeError} href="gg.com">
+                      <Link
+                        to="/customers"
+                        className="close"
+                        onClick={this.closeError}
+                      >
                         ×
-                      </a>
+                      </Link>
                       <ul>
                         {errors.map((item, index) => (
                           <li key={index}>{item}</li>

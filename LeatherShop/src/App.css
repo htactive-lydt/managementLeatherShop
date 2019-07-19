@@ -1095,6 +1095,21 @@ mark,
   margin-bottom: 20px;
 }
 
+.form-add-customer{
+  margin-top: 30px;
+}
+
+.search-customer{
+  margin-top: 30px;
+}
+
+input[type='radio']{
+  width: 25px;
+}
+
+.deleted{
+  background-color:#ff751a;
+}
 .card {
   height: 370px;
   margin-top: auto;

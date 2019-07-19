@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from 'react'
 
-export default class CategoryListItem extends React.Component {
+export default class CategoryListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {

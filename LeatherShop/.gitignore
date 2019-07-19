@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-../vali-admin-master
-/node_modules
+vali-admin-master
+node_modules
 /.pnp
 .pnp.js
 
