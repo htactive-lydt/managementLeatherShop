@@ -12,6 +12,7 @@ import LeftMenu from "./components/layouts/LeftMenu";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import Login from "./pages/login";
+import NotFound from "./pages/notfound";
 import { withFirebase } from "./components/Firebase";
 import IsLoading from "./components/layouts/IsLoading";
 
@@ -177,7 +178,7 @@ class AppBase extends React.Component {
             {isLoaded ? (
               <>
                 <Switch>
-                  <Route exact path="/" component={() => <Home />} />
+                  <Route exact path="/" component={() => <Home orders={orders} products={products}/>} />
                   <Route
                     path="/users"
                     component={() => (
@@ -258,12 +259,14 @@ class AppBase extends React.Component {
             ) : (
               <IsLoading />
             )}
-
             <Footer />
           </Router>
         ) : (
           <Router>
-            <Route path="/" component={() => <Login users={users} />} />
+            <Switch>
+              <Route exact path="/" component={() => <Login users={users} />} />
+              <Route component={() => <NotFound />} />
+            </Switch>
           </Router>
         )}
         )

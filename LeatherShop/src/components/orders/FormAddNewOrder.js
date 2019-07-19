@@ -127,8 +127,8 @@ export default class FormAddNewOrder extends Component {
     let searchValue = this.state.valueSearchProd;
     if (listProducts.length > 0) {
       let resultSearchProd = listProducts.filter(item => {
-        if (!item.deleteAt) {
-          return item.name.search(searchValue) !== -1;
+        if (!item.deleteAt && searchValue) {
+          return item.name.toLowerCase().search(searchValue.toLowerCase()) !== -1;
         }
         return "";
       });
