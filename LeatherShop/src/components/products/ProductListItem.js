@@ -1,6 +1,7 @@
 import React from "react";
+import { withFirebase } from "../Firebase";
 
-export default class CategoryListItem extends React.Component {
+class ProductListItemBase extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +14,13 @@ export default class CategoryListItem extends React.Component {
     this.setState(prevState => ({
       isUpdating: !prevState.isUpdating
     }));
+  };
+
+  handleChangeImage = event => {
+    if (event.target.files[0]) {
+      const image = event.target.files[0];
+      this.setState({ image });
+    }
   };
 
   handleChange = event => {
@@ -29,7 +37,46 @@ export default class CategoryListItem extends React.Component {
   };
 
   saveUpdate = () => {
-    this.props.update("products", this.state.updateProduct);
+    const { image, updateProduct } = this.state;
+    console.log(image);
+    if (image) {
+      const uploadTask = this.props.firebase.storage
+        .ref(`images/${image.name}`)
+        .put(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          this.setState({ progress });
+        },
+        error => {
+          console.log("error", error);
+        },
+        () => {
+          this.props.firebase.storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              this.setState(prevState => ({
+                ...prevState,
+                updateProduct: {
+                  ...prevState.updateProduct,
+                  image: url
+                }
+              }));
+              this.props.update("products", {
+                ...updateProduct,
+                image: url
+              });
+            });
+        }
+      );
+    } else {
+      this.props.update("products", updateProduct);
+    }
     this.hanleUpdate();
   };
 
@@ -88,13 +135,27 @@ export default class CategoryListItem extends React.Component {
           </td>
           <td>
             <input
-              type={`${isUpdating ? "image" : "image"}`}
+              // type={`${isUpdating ? "image" : "image"}`}
+              type="image"
               src={image}
+              defaultValue={isUpdating ? image : ""}
               alt="Not Found"
               height="100px"
               width="100px"
               name="image"
             />
+            {isUpdating ? (
+              <input
+                name="image"
+                type="file"
+                placeholder="Please choose a product's image"
+                className="form-control"
+                onChange={this.handleChangeImage}
+                required
+              />
+            ) : (
+              ""
+            )}
           </td>
           <td width="30px">
             <input
@@ -207,3 +268,6 @@ export default class CategoryListItem extends React.Component {
     );
   }
 }
+
+const ProductListItem = withFirebase(ProductListItemBase);
+export default ProductListItem;

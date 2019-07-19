@@ -33,7 +33,6 @@ class FormAddProductBase extends Component {
       const image = e.target.files[0];
       this.setState({ image });
     }
-    console.log("demo 1", this.state.image);
   };
 
   checkValidate = () => {
@@ -41,36 +40,37 @@ class FormAddProductBase extends Component {
       cateID,
       dateAdd,
       description,
-      image,
       name,
       priceIn,
       priceOut,
       pricePromotion,
       quantity
-    } = this.state;
+    } = this.state.newProduct;
+    const {image} = this.state;
     let errors = [];
     let date = new Date();
+    console.log("name", name);
     let dateAddProduct =
       date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    if (name === "") {
+    if (!name) {
       errors.push("Product's name is required");
     }
-    if (cateID === "") {
+    if (!cateID) {
       errors.push("Category's name is required");
     }
-    if (dateAdd  === "") {
+    if (!image) {
+      errors.push("Product's image is required");
+    }
+    if (!dateAdd) {
       errors.push("Date add product is required");
     }
     if (date < dateAddProduct) {
       errors.push("Date add product must fdkjk");
     }
-    if (description  === "") {
+    if (!description) {
       errors.push("Product's description is required");
     }
-    if (!image) {
-      errors.push("Product's image is required");
-    }
-
+  
     if (!priceIn) {
       errors.push("Product's price in is required");
     }
@@ -94,39 +94,40 @@ class FormAddProductBase extends Component {
 
   addNewProduct = event => {
     event.preventDefault();
+    console.log(this.state.name);
     if (this.checkValidate()) {
-    const { image } = this.state;
-    console.log("image 222222222222", image);
-    const uploadTask = this.props.firebase.storage
-      .ref(`images/${image.name}`)
-      .put(image);
-    console.log(image);
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        this.setState({ progress });
-      },
-      error => {
-        console.log("error", error);
-      },
-      () => {
-        this.props.firebase.storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then(url => {
-            console.log("url", url);
-            
-            this.props.addNew("products", {
-              ...this.state.newProduct,
-              image: url
+      const { image } = this.state;
+      console.log("image 222222222222", image);
+      const uploadTask = this.props.firebase.storage
+        .ref(`images/${image.name}`)
+        .put(image);
+      console.log(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          this.setState({ progress });
+        },
+        error => {
+          console.log("error", error);
+        },
+        () => {
+          this.props.firebase.storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              console.log("url", url);
+
+              this.props.addNew("products", {
+                ...this.state.newProduct,
+                image: url
+              });
             });
-          });
-      }
-    );
+        }
+      );
     }
   };
 

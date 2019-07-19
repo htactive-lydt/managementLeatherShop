@@ -35,7 +35,7 @@ const HeaderBase = props => {
           <i className="fa fa-bell-o fa-lg" />
         </li>
         <li className="app-nav__item" >
-          <Link to="/login" onClick={logout} >
+          <Link to="/" onClick={logout} >
             <i className="fa fa-sign-out logout fa-1x"/>
           </Link>
         </li>

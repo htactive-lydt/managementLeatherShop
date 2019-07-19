@@ -120,14 +120,14 @@ class AppBase extends React.Component {
     let deleteDate =
       date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.set({...rowUpdateSnapshot, deleteAt: deleteDate});
+    tableCall.set({ ...rowUpdateSnapshot, deleteAt: deleteDate });
   };
 
   undoDelete = (table, rowUpdate) => {
     const { id, ...rowUpdateSnapshot } = rowUpdate;
     let tableCall = this.getTableCallUpdate(table, id);
-    tableCall.set({...rowUpdateSnapshot, deleteAt: ""});
-  }
+    tableCall.set({ ...rowUpdateSnapshot, deleteAt: "" });
+  };
   componentDidMount() {
     this.getData("users");
     this.getData("customers");
@@ -160,97 +160,96 @@ class AppBase extends React.Component {
       orders,
       user
     } = this.state;
-    if (user) {
-      return (
-        <Router>
-          <Header />
-          <LeftMenu />
-          <Switch>
-            <Route exact path="/" component={() => <Home />} />
-            <Route
-              path="/users"
-              component={() => (
-                <Users
-                  users={users}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                  undoDelete={this.undoDelete}
-                />
-              )}
-            />
-            <Route
-              path="/customers"
-              component={() => (
-                <Customers
-                  customers={customers}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                />
-              )}
-            />
-            <Route
-              path="/employees"
-              component={() => (
-                <Employees
-                  employees={employees}
-                  addNew={this.addNew}
-                  update={this.update}
-                  undoDelete={this.undoDelete}
-                  deleteItem={this.deleteItem}
-                />
-              )}
-            />
-            <Route
-              path="/categories"
-              component={() => (
-                <Categories
-                  categories={categories}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                  undoDelete={this.undoDelete}
-                />
-              )}
-            />
-            <Route
-              path="/products"
-              component={() => (
-                <Products
-                  products={products}
-                  categories={categories}
-                  addNew={this.addNew}
-                  update={this.update}
-                  deleteItem={this.deleteItem}
-                  undoDelete={this.undoDelete}
-                />
-              )}
-            />
-            <Route
-              path="/orders"
-              component={() => (
-                <Orders
-                  products={products}
-                  orders={orders}
-                  addNew={this.addNew}
-                  update={this.update}
-                />
-              )}
-            />
-          </Switch>
-          <Footer />
-        </Router>
-      );
-    } else {
-      return (
-        <Router>
-          <Route path="/login" component={() => <Login users={users} />} />
-        </Router>
-      );
-    }
+    return (
+      <>
+        {user ? (
+          <Router>
+            <Header />
+            <LeftMenu />
+            <Switch>
+              <Route exact path="/" component={() => <Home />} />
+              <Route
+                path="/users"
+                component={() => (
+                  <Users
+                    users={users}
+                    addNew={this.addNew}
+                    update={this.update}
+                    deleteItem={this.deleteItem}
+                    undoDelete={this.undoDelete}
+                  />
+                )}
+              />
+              <Route
+                path="/customers"
+                component={() => (
+                  <Customers
+                    customers={customers}
+                    addNew={this.addNew}
+                    update={this.update}
+                    deleteItem={this.deleteItem}
+                  />
+                )}
+              />
+              <Route
+                path="/employees"
+                component={() => (
+                  <Employees
+                    employees={employees}
+                    addNew={this.addNew}
+                    update={this.update}
+                    undoDelete={this.undoDelete}
+                    deleteItem={this.deleteItem}
+                  />
+                )}
+              />
+              <Route
+                path="/categories"
+                component={() => (
+                  <Categories
+                    categories={categories}
+                    addNew={this.addNew}
+                    update={this.update}
+                    deleteItem={this.deleteItem}
+                    undoDelete={this.undoDelete}
+                  />
+                )}
+              />
+              <Route
+                path="/products"
+                component={() => (
+                  <Products
+                    products={products}
+                    categories={categories}
+                    addNew={this.addNew}
+                    update={this.update}
+                    deleteItem={this.deleteItem}
+                    undoDelete={this.undoDelete}
+                  />
+                )}
+              />
+              <Route
+                path="/orders"
+                component={() => (
+                  <Orders
+                    products={products}
+                    orders={orders}
+                    addNew={this.addNew}
+                    update={this.update}
+                  />
+                )}
+              />
+            </Switch>
+            <Footer />
+          </Router>
+        ) : (
+          <Router>
+            <Route path="/" component={() => <Login users={users} />} />
+          </Router>
+        )}
+      </>
+    );
   }
 }
-
 const App = withFirebase(AppBase);
 export default App;
