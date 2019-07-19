@@ -44,7 +44,7 @@ export default class UserListItem extends React.Component {
 
   render() {
     const { isUpdating } = this.state;
-    const { username, password, role, deleteAt } = this.props.item;
+    const { email, password, role, deleteAt } = this.props.item;
     const { roleUser } = this.state;
 
     return (
@@ -59,8 +59,8 @@ export default class UserListItem extends React.Component {
             <input
               type="text"
               className="form-control"
-              name="username"
-              defaultValue={username}
+              name="email"
+              defaultValue={email}
               onChange={this.handleChange}
             />
           </td>

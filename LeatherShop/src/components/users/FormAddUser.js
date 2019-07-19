@@ -28,7 +28,7 @@ export default class FormAddnewUser extends Component {
     const { email, password } = this.state.newUser;
     let errors = [];
     if (!email) {
-      errors.push("User's name is required!");
+      errors.push("User's email is required!");
     }
     if (!password) {
       errors.push("User's pass is required!");
@@ -113,7 +113,7 @@ export default class FormAddnewUser extends Component {
                   <input
                     type="email"
                     name="email"
-                    placeholder="Enter user's name"
+                    placeholder="Enter user's email"
                     className="form-control"
                     onChange={this.handleChange}
                     required
@@ -136,7 +136,7 @@ export default class FormAddnewUser extends Component {
                     name="role"
                   >
                     <option value="administrator">Admin</option>
-                    <option value="customer">User</option>
+                    <option value="customer">customer</option>
                   </select>
                 </div>
                 <div className="form-group col-md-1">

@@ -24,7 +24,7 @@ export default function UserList(props) {
             <thead className="thead-light">
               <tr>
                 <th>#</th>
-                <th>USER NAME</th>
+                <th>EMAIL</th>
                 <th>PASSWORD</th>
                 <th>ROLE</th>
                 <th>ACTION</th>
