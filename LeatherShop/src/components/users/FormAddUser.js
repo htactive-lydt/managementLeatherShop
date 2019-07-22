@@ -24,6 +24,18 @@ export default class FormAddnewUser extends Component {
     });
   };
 
+  handleChange = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState(prevState => ({
+      ...prevState,
+      newUser: {
+        ...prevState.newUser,
+        [name]: value,
+      }
+    }));
+  };
+
   checkValid = () => {
     const { email, password } = this.state.newUser;
     let errors = [];
@@ -33,7 +45,6 @@ export default class FormAddnewUser extends Component {
     if (!password) {
       errors.push("User's pass is required!");
     }
-
     if (errors.length > 0) {
       this.setState({
         errors
@@ -58,18 +69,7 @@ export default class FormAddnewUser extends Component {
     }
   };
 
-  handleChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(prevState => ({
-      ...prevState,
-      newUser: {
-        ...prevState.newUser,
-        [name]: value
-      }
-    }));
-  };
+ 
 
   render() {
     const { isOpenForm, errors } = this.state;

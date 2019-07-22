@@ -32,7 +32,10 @@ class AppBase extends React.Component {
       user: null
     };
     // .app.firebase.database
-    console.log(this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database.ServerValue.TIMESTAMP)
+    console.log(
+      this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database
+        .ServerValue.TIMESTAMP
+    );
   }
 
   getTableCall = table => {
@@ -92,29 +95,33 @@ class AppBase extends React.Component {
     this.setState({
       isLoaded: false
     });
-    tableCall.orderByChild("createAt").startAt(1563763270415).on("value", snapshot => {
-      const object = snapshot.val();
-      if (object) {
-        const objectList = Object.keys(object).map(key => ({
-          ...object[key],
-          id: key
-        }));
-        this.setState({
-          [table]: objectList.filter(item => !item.deleteAt).reverse(),
-          isLoaded: true
-        });
-      } else {
-        this.setState({
-          [table]: []
-        });
-      }
-    });
+    tableCall
+      .orderByChild("createAt")
+      .startAt(1563763270415)
+      .on("value", snapshot => {
+        const object = snapshot.val();
+        if (object) {
+          const objectList = Object.keys(object).map(key => ({
+            ...object[key],
+            id: key
+          }));
+          this.setState({
+            [table]: objectList.filter(item => !item.deleteAt).reverse(),
+            isLoaded: true
+          });
+        } else {
+          this.setState({
+            [table]: []
+          });
+        }
+      });
   };
 
   addNew = (table, rowNew) => {
     let tableCall = this.getTableCall(table);
-    let createAt = this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database.ServerValue.TIMESTAMP;
-    let key = tableCall.push({...rowNew, createAt}).getKey();
+    let createAt = this.props.firebase.db.INTERNAL.database.repo_.app.firebase_
+      .database.ServerValue.TIMESTAMP;
+    let key = tableCall.push({ ...rowNew, createAt }).getKey();
     this.getData(table);
     return key;
   };
@@ -273,7 +280,10 @@ class AppBase extends React.Component {
         ) : (
           <Router>
             <Switch>
-              <Route exact path="/" component={() => <Login users={users} />} />
+              <Route
+                path="/"
+                component={() => <Login users={users} addNew={this.addNew} />}
+              />
               <Route component={() => <NotFound />} />
             </Switch>
           </Router>
