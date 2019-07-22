@@ -3,7 +3,7 @@ import CategoryListItem from "./CategoryListItems";
 
 export default function CustomerList(props) {
   const { deleteItem, update, categories, undoDelete } = props;
-  let listItems = categories.map((item, index) => (
+  let listItems = categories.filter(item => !item.deleteAt).map((item, index) => (
     <CategoryListItem
       key={item.id}
       item={item}

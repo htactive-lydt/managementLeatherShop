@@ -40,7 +40,7 @@ export default class CustomerListItem extends Component {
 
   undoDelete = () => {
     this.props.undoDelete("customers", this.state.updateCustomer);
-  }
+  };
 
   render() {
     const {
@@ -105,63 +105,40 @@ export default class CustomerListItem extends Component {
           />
         </td>
         <td>
-          {!deleteAt ? (
-            isUpdating ? (
-              <>
-                <span>
-                  <button
-                    className="btn btn-success btn-control"
-                    onClick={this.saveUpdate}
-                  >
-                    <i className="fa fa-floppy-o" />
-                  </button>
-                  <button
-                    className="btn btn-secondary btn-control"
-                    onClick={this.hanleUpdate}
-                  >
-                    <i className="fa fa-ban" />
-                  </button>
-                </span>
-                <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    window.confirm("Do you want to delete this task?")
-                      ? this.deleteItem()
-                      : ""
-                  }
-                >
-                  <i className="fa fa-trash-o" />
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  className="btn btn-warning margin btn-control"
-                  onClick={this.hanleUpdate}
-                >
-                  <i className="fa fa-pencil" />
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    window.confirm("Do you want to delete this task?")
-                      ? this.deleteItem()
-                      : ""
-                  }
-                >
-                  <i className="fa fa-trash-o" />
-                </button>
-                &nbsp;
-              </>
-            )
+          {isUpdating ? (
+            <span>
+              <button
+                className="btn btn-success btn-control"
+                onClick={this.saveUpdate}
+              >
+                <i className="fa fa-floppy-o" />
+              </button>
+              <button
+                className="btn btn-secondary btn-control"
+                onClick={this.hanleUpdate}
+              >
+                <i className="fa fa-ban" />
+              </button>
+            </span>
           ) : (
             <button
               className="btn btn-warning margin btn-control"
-              onClick={this.undoDelete}
+              onClick={this.hanleUpdate}
             >
-              <i className="fa fa-undo" />
+              <i className="fa fa-pencil" />
             </button>
           )}
+          <button
+            className="btn btn-danger"
+            onClick={() =>
+              window.confirm("Do you want to delete this task?")
+                ? this.deleteItem()
+                : ""
+            }
+          >
+            <i className="fa fa-trash-o" />
+          </button>
+          &nbsp;
         </td>
       </tr>
     );

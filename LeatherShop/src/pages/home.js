@@ -15,6 +15,7 @@ export default class home extends Component {
     });
   };
 
+
   calRevenue = monthInput => {
     const { year: yearInput } = this.state;
     const { orders, products } = this.props;
@@ -81,21 +82,27 @@ export default class home extends Component {
     };
     return (
       <main className="app-content">
-        <div className="container">
-          <div className="col-md-3">
-            <label>Choose Year: </label>
-            <select className="form-control" onChange={this.handleChange}>
-              {years.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="col-md-3 panel-body">
+              <label>Choose Year: </label>
+              <select className="form-control" onChange={this.handleChange}>
+                {years.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <CanvasJSChart
+              options={options}
+              /* onRef={ref => this.chart = ref} */
+            />
           </div>
-          <CanvasJSChart
-            options={options}
-            /* onRef={ref => this.chart = ref} */
-          />
+          <div className="col-md-4">
+            <h3 className="panel-title">LIST OF TOP CUSTOMERS</h3>
+          </div>
+
           {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
         </div>
       </main>

@@ -106,7 +106,7 @@ class AppBase extends React.Component {
             id: key
           }));
           this.setState({
-            [table]: objectList.filter(item => !item.deleteAt).reverse(),
+            [table]: objectList.reverse(),
             isLoaded: true
           });
         } else {
@@ -192,7 +192,7 @@ class AppBase extends React.Component {
                     exact
                     path="/"
                     component={() => (
-                      <Home orders={orders} products={products} />
+                      <Home orders={orders} products={products} customers={customers} />
                     )}
                   />
                   <Route

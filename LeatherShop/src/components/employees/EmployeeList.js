@@ -3,7 +3,7 @@ import EmployeeListItem from "./EmployeeListItem";
 
 export default function EmployeeList(props) {
   const { deleteItem, update, employees, undoDelete } = props;
-  let listItems = employees.map((item, index) => (
+  let listItems = employees.filter(item => !item.deleteAt).map((item, index) => (
     <EmployeeListItem
       key={item.id}
       item={item}
