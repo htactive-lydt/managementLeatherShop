@@ -1161,7 +1161,12 @@ input:focus {
   color: black;
   background-color: #ffc312;
   width: 100px;
-  margin-top: 19px;
+  margin-top: 33px;
+}
+
+.login_btn:hover {
+  color: black;
+  background-color: white;
 }
 
 .login_btn:hover {
@@ -1191,4 +1196,8 @@ input:focus {
 
 .deleted {
   background-color: red;
+}
+
+.div-error p{
+  color: red
 }

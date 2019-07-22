@@ -25,7 +25,6 @@ export default function UserList(props) {
               <tr>
                 <th>#</th>
                 <th>EMAIL</th>
-                <th>PASSWORD</th>
                 <th>ROLE</th>
                 <th>ACTION</th>
               </tr>

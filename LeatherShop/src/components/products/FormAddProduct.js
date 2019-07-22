@@ -226,7 +226,7 @@ class FormAddProductBase extends Component {
                 </div>
                 <div className="form-group col-md-6">
                   <label>Product's image</label>
-                  <progress value={this.state.progress} max="100" />
+                  {/* <progress value={this.state.progress} max="100" /> */}
                   <input
                     name="image"
                     type="file"

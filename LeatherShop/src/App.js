@@ -97,7 +97,7 @@ class AppBase extends React.Component {
           id: key
         }));
         this.setState({
-          [table]: objectList,
+          [table]: objectList.filter(item => !item.deleteAt),
           isLoaded: true
         });
       } else {
@@ -263,7 +263,7 @@ class AppBase extends React.Component {
           </Router>
         ) : (
           <Router>
-            <Route path="/" component={() => <Login users={users} />} />
+            <Route path="/" component={() => <Login users={users} addNew={this.addNew} />} />
           </Router>
         )}
         )

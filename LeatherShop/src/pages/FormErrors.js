@@ -1,6 +1,6 @@
 import React from "react";
 export const FormErrors = ({formErrors}) =>
-  <div className='alert alert-danger'>
+  <div className='div-error'>
     {Object.keys(formErrors).map((fieldName, i) => {
       if(formErrors[fieldName].length > 0){
         return (
