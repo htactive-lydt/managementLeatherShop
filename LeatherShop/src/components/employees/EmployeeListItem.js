@@ -99,65 +99,41 @@ export default class EmployeeListItem extends React.Component {
             />
           </td>
           <td width="200px">
-            {!deleteAt ? (
-              isUpdating ? (
-                <>
-                  <span>
-                    <button
-                      className="btn btn-success btn-control"
-                      onClick={this.saveUpdate}
-                    >
-                      <i className="fa fa-floppy-o" />
-                    </button>
-                    <button
-                      className="btn btn-secondary btn-control"
-                      onClick={this.hanleUpdate}
-                    >
-                      <i className="fa fa-ban" />
-                    </button>
-                  </span>
-
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      window.confirm("Do you want to delete this task?")
-                        ? this.deleteItem()
-                        : ""
-                    }
-                  >
-                    <i className="fa fa-trash-o" />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className="btn btn-warning margin btn-control"
-                    onClick={this.hanleUpdate}
-                  >
-                    <i className="fa fa-pencil" />
-                  </button>
-
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      window.confirm("Do you want to delete this task?")
-                        ? this.deleteItem()
-                        : ""
-                    }
-                  >
-                    <i className="fa fa-trash-o" />
-                  </button>
-                </>
-              )
-            ) : (
+          {isUpdating ? (
+            <span>
               <button
-                className="btn btn-warning margin btn-control"
-                onClick={this.undoDelete}
+                className="btn btn-success btn-control"
+                onClick={this.saveUpdate}
               >
-                <i className="fa fa-undo" />
+                <i className="fa fa-floppy-o" />
               </button>
-            )}
-          </td>
+              <button
+                className="btn btn-secondary btn-control"
+                onClick={this.hanleUpdate}
+              >
+                <i className="fa fa-ban" />
+              </button>
+            </span>
+          ) : (
+            <button
+              className="btn btn-warning margin btn-control"
+              onClick={this.hanleUpdate}
+            >
+              <i className="fa fa-pencil" />
+            </button>
+          )}
+          <button
+            className="btn btn-danger"
+            onClick={() =>
+              window.confirm("Do you want to delete this task?")
+                ? this.deleteItem()
+                : ""
+            }
+          >
+            <i className="fa fa-trash-o" />
+          </button>
+          &nbsp;
+        </td>
         </tr>
       </>
     );

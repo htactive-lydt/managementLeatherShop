@@ -110,7 +110,7 @@ class ProductListItemBase extends React.Component {
             deleteAt ? "deleted" : ""
           }`}
         >
-          <td key={key}>
+          <td key={key} width="149px">
             <select
               onChange={this.handleChange}
               defaultValue={cateID}
@@ -157,7 +157,7 @@ class ProductListItemBase extends React.Component {
               ""
             )}
           </td>
-          <td width="30px">
+          <td >
             <input
               type="date"
               className="form-control"
@@ -204,64 +204,40 @@ class ProductListItemBase extends React.Component {
             />
           </td>
           <td width="200px">
-            {!deleteAt ? (
-              isUpdating ? (
-                <>
-                  <span>
-                    <button
-                      className="btn btn-success btn-control"
-                      onClick={this.saveUpdate}
-                    >
-                      <i className="fa fa-floppy-o" />
-                    </button>
-                    <button
-                      className="btn btn-secondary btn-control"
-                      onClick={this.hanleUpdate}
-                    >
-                      <i className="fa fa-ban" />
-                    </button>
-                  </span>
-
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      window.confirm("Do you want to delete this task?")
-                        ? this.deleteItem()
-                        : ""
-                    }
-                  >
-                    <i className="fa fa-trash-o" />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className="btn btn-warning margin btn-control"
-                    onClick={this.hanleUpdate}
-                  >
-                    <i className="fa fa-pencil" />
-                  </button>
-
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      window.confirm("Do you want to delete this task?")
-                        ? this.deleteItem()
-                        : ""
-                    }
-                  >
-                    <i className="fa fa-trash-o" />
-                  </button>
-                </>
-              )
+            {isUpdating ? (
+              <span>
+                <button
+                  className="btn btn-success btn-control"
+                  onClick={this.saveUpdate}
+                >
+                  <i className="fa fa-floppy-o" />
+                </button>
+                <button
+                  className="btn btn-secondary btn-control"
+                  onClick={this.hanleUpdate}
+                >
+                  <i className="fa fa-ban" />
+                </button>
+              </span>
             ) : (
               <button
                 className="btn btn-warning margin btn-control"
-                onClick={this.undoDelete}
+                onClick={this.hanleUpdate}
               >
-                <i className="fa fa-undo" />
+                <i className="fa fa-pencil" />
               </button>
             )}
+            <button
+              className="btn btn-danger"
+              onClick={() =>
+                window.confirm("Do you want to delete this task?")
+                  ? this.deleteItem()
+                  : ""
+              }
+            >
+              <i className="fa fa-trash-o" />
+            </button>
+            &nbsp;
           </td>
         </tr>
       </>

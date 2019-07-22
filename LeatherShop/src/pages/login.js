@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../components/Firebase";
-import { FormErrors } from "./FormErrors";
+import { Link } from "react-router-dom";
 
 class LoginBase extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ class LoginBase extends Component {
       formErrors: { email: "", password: "" },
       emailValid: false,
       passwordValid: false,
-      formValid: false
+      formValid: false,
+      errors: []
     };
   }
 
@@ -23,66 +24,58 @@ class LoginBase extends Component {
     const value = event.target.value;
     console.log(value);
     console.log(name);
-    this.setState(
-      prevState => ({
-        ...prevState,
-        newUser: {
-          ...prevState.newUser,
-          [name]: value
-        }
-      }),
-      () => {
-        this.validateField(name, value);
+    this.setState(prevState => ({
+      ...prevState,
+      newUser: {
+        ...prevState.newUser,
+        [name]: value
       }
-    );
+    }));
   };
 
-  validateField(fieldName, value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
-
-    switch (fieldName) {
-      case "email":
-        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? "" : " is invalid";
-        break;
-      case "password":
-        passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? "" : " is too short";
-        break;
-      default:
-        break;
+  checkValidate = () => {
+    let errors = [];
+    const { email, password } = this.state.newUser;
+    if (!email) {
+      errors.push("Email is required");
     }
-    this.setState(
-      {
-        formErrors: fieldValidationErrors,
-        emailValid: emailValid,
-        passwordValid: passwordValid
-      },
-      this.validateForm
-    );
-  }
-
-  validateForm() {
-    this.setState({
-      formValid: this.state.emailValid && this.state.passwordValid
-    });
-  }
-
-  errorClass(error) {
-    return error.length === 0 ? "" : "has-error";
-  }
+    else if (!email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      errors.push("Email is invalid");
+    }
+    if (!password) {
+      errors.push("Password is required");
+    }
+    
+    if (errors.length > 0) {
+      this.setState({
+        errors
+      });
+      return 0;
+    }
+    return 1;
+  };
 
   loginClick = event => {
+    let errors = [];
     const { email, password } = this.state.newUser;
     event.preventDefault();
-    this.props.firebase.auth
-      .signInWithEmailAndPassword(email, password)
-      .then(u => {})
-      .catch(error => {
-        alert(error);
-      });
+    if (this.checkValidate()) {
+      this.props.firebase.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(u => {})
+        .catch(error => {
+          errors.push(error.message);
+          this.setState({
+            errors
+          });
+        });
+    }
+  };
+
+  closeError = () => {
+    this.setState({
+      errors: []
+    });
   };
 
   signupClick = event => {
@@ -98,6 +91,7 @@ class LoginBase extends Component {
       });
   };
   render() {
+    const { errors } = this.state;
     return (
       <div className=" container-login">
         <div className="d-flex justify-content-center h-100">
@@ -106,15 +100,26 @@ class LoginBase extends Component {
               <h3>Sign In</h3>
             </div>
             <div className="card-body">
-              <FormErrors formErrors={this.state.formErrors} />
+              {errors.length > 0 ? (
+                <>
+                  <div className="alert alert-danger">
+                    <Link to="/" className="close" onClick={this.closeError}>
+                      ×
+                    </Link>
+                    <ul>
+                      {errors.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
             <div className="card-body">
               <form>
-                <div
-                  className={`input-group form-group ${this.errorClass(
-                    this.state.formErrors.email
-                  )}`}
-                >
+                <div className="input-group form-group">
                   <div className="input-group-prepend">
                     <span className="input-group-text">
                       <i className="fa fa-envelope-o" aria-hidden="true" />
@@ -129,11 +134,7 @@ class LoginBase extends Component {
                     placeholder="Enter email"
                   />
                 </div>
-                <div
-                  className={`input-group form-group ${this.errorClass(
-                    this.state.formErrors.password
-                  )}`}
-                >
+                <div className="input-group form-group">
                   <div className="input-group-prepend">
                     <span className="input-group-text">
                       <i className="fa fa-key" aria-hidden="true" />
@@ -152,14 +153,12 @@ class LoginBase extends Component {
                     type="submit"
                     className="btn float-left login_btn "
                     onClick={this.loginClick}
-                    disabled={!this.state.formValid}
                     value="Log In"
                   />
                 </div>
                 <div className="form-group">
                   <input
                     type="submit"
-                    disabled={!this.state.formValid}
                     className="btn float-right signup_btn "
                     onClick={this.signupClick}
                     value="Sign Up"

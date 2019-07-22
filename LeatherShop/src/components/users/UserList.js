@@ -3,7 +3,7 @@ import UserListItem from "./UserListItem";
 
 export default function UserList(props) {
   const { deleteItem, update, users, undoDelete } = props;
-  let listItems = users.map((item, index) => (
+  let listItems = users.filter(item => !item.deleteAt).map((item, index) => (
     <UserListItem
       key={item.id}
       item={item}

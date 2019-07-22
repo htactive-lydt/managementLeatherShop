@@ -15,6 +15,7 @@ export default class home extends Component {
     });
   };
 
+
   calRevenue = monthInput => {
     const { year: yearInput } = this.state;
     const { orders, products } = this.props;
