@@ -3,7 +3,8 @@ import CustomerListItem from "./CustomerListItem";
 
 export default function CustomerList(props) {
   const { deleteItem, update, customers, undoDelete } = props;
-  let listItems = customers.map((item, index) => (
+
+  let listItems = customers.filter(item => !item.deleteAt).map((item, index) => (
     <CustomerListItem
       key={item.id}
       item={item}

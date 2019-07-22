@@ -29,6 +29,9 @@ export default class FormAddNewCustomer extends Component {
   checkValid = () => {
     const { name, birthday, address, phoneNumber } = this.state.newCustomer;
     let errors = [];
+    let index = this.props.customers.findIndex(
+      item => item.phoneNumber === phoneNumber
+    );
     if (!name) {
       errors.push("Customer's name is required!");
     }
@@ -40,6 +43,8 @@ export default class FormAddNewCustomer extends Component {
     }
     if (!phoneNumber) {
       errors.push("Customer's phone number is required!");
+    } else if (index !== -1) {
+      errors.push("Customer's phone number is already exist!");
     }
     if (errors.length > 0) {
       this.setState({

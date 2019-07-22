@@ -31,11 +31,6 @@ class AppBase extends React.Component {
       orders: [],
       user: null
     };
-    // .app.firebase.database
-    console.log(
-      this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database
-        .ServerValue.TIMESTAMP
-    );
   }
 
   getTableCall = table => {
@@ -97,7 +92,6 @@ class AppBase extends React.Component {
     });
     tableCall
       .orderByChild("createAt")
-      .startAt(1563763270415)
       .on("value", snapshot => {
         const object = snapshot.val();
         if (object) {
@@ -106,7 +100,7 @@ class AppBase extends React.Component {
             id: key
           }));
           this.setState({
-            [table]: objectList.filter(item => !item.deleteAt).reverse(),
+            [table]: objectList.reverse(),
             isLoaded: true
           });
         } else {
@@ -192,7 +186,7 @@ class AppBase extends React.Component {
                     exact
                     path="/"
                     component={() => (
-                      <Home orders={orders} products={products} />
+                      <Home orders={orders} products={products} customers={customers}/>
                     )}
                   />
                   <Route

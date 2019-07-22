@@ -1,11 +1,12 @@
 import React from "react";
+
 import OrderListItem from "./OrderListItem";
 
 export default function OrderList(props) {
-  const { orders, listProducts, customers, deleteItem, undoDelete} = props;
+  const { orders, listProducts, customers, deleteItem, undoDelete } = props;
   let orderList = "";
   if (orders.length > 0) {
-    orderList = orders.map((item, index) => {
+    orderList = orders.filter(item => !item.deleteAt).map((item, index) => {
       return (
         <OrderListItem
           item={item}

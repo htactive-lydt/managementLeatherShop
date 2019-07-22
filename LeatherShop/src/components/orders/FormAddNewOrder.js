@@ -128,7 +128,9 @@ export default class FormAddNewOrder extends Component {
     if (listProducts.length > 0) {
       let resultSearchProd = listProducts.filter(item => {
         if (!item.deleteAt && searchValue) {
-          return item.name.toLowerCase().search(searchValue.toLowerCase()) !== -1;
+          return (
+            item.name.toLowerCase().search(searchValue.toLowerCase()) !== -1
+          );
         }
         return "";
       });
@@ -243,7 +245,11 @@ export default class FormAddNewOrder extends Component {
   };
 
   checkValidAddNewCus = () => {
-    const { name, birthday, address, phoneNumber, errors } = this.state;
+    const { name, birthday, address, phoneNumber } = this.state;
+    let index = this.props.customers.findIndex(
+      item => item.phoneNumber === phoneNumber
+    );
+    let errors = [];
     if (!name) {
       errors.push("Customer's name is required!");
     }
@@ -255,6 +261,8 @@ export default class FormAddNewOrder extends Component {
     }
     if (!phoneNumber) {
       errors.push("Customer's phone number is required!");
+    } else if (index !== -1) {
+      errors.push("Customer's phone number is already exist!");
     }
     if (errors.length > 0) {
       this.setState(prevState => ({
@@ -388,7 +396,11 @@ export default class FormAddNewOrder extends Component {
                 <>
                   <div className="col-md-1" />
                   <div className="alert alert-danger col-md-10">
-                    <Link to="/orders" className="close" onClick={this.closeError}>
+                    <Link
+                      to="/orders"
+                      className="close"
+                      onClick={this.closeError}
+                    >
                       ×
                     </Link>
                     <ul>

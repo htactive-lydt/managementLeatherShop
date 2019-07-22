@@ -7,7 +7,7 @@ const Customers = props => {
     <>
       <main className="app-content">
         <div className="container">
-          <FormAddNewCustomer addNew={addNew} />
+          <FormAddNewCustomer addNew={addNew} customers={customers} />
           <CustomerList
             customers={customers}
             update={update}

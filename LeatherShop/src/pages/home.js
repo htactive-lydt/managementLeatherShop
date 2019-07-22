@@ -51,8 +51,33 @@ export default class home extends Component {
     }
   };
 
+  calTotalAmountCus = () => {
+    const { orders } = this.props;
+    let array = [];
+    if (orders.length > 0) {
+      let listCus = orders.map(order => order.idCus).filter(item => item);
+
+      listCus = [...new Set(listCus)];
+
+      array = listCus.map(idCus => {
+        let total = orders.reduce((total, item) => {
+          if (item.idCus === idCus) {
+            total += item.amount;
+          }
+
+          return total;
+        }, 0);
+        return { idCus, total };
+      });
+    }
+    array.sort((a, b) => b.total - a.total);
+    return array.slice(0, 8);
+  };
+
   render() {
     let years = [2019, 2018, 2017, 2016, 2015, 2014];
+
+    let listCustomer = this.calTotalAmountCus();
 
     const options = {
       title: {
@@ -60,7 +85,6 @@ export default class home extends Component {
       },
       data: [
         {
-          // Change type to "doughnut", "line", "splineArea", etc.
           type: "column",
           dataPoints: [
             { label: "Tháng 1", y: this.calRevenue(1) },
@@ -81,22 +105,40 @@ export default class home extends Component {
     };
     return (
       <main className="app-content">
-        <div className="container">
-          <div className="col-md-3">
-            <label>Choose Year: </label>
-            <select className="form-control" onChange={this.handleChange}>
-              {years.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="tile">
+              <div className="col-md-3 panel-body">
+                <label>Choose Year: </label>
+                <select className="form-control" onChange={this.handleChange}>
+                  {years.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <CanvasJSChart options={options} />
+            </div>
           </div>
-          <CanvasJSChart
-            options={options}
-            /* onRef={ref => this.chart = ref} */
-          />
-          {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+          <div className="col-md-4 tile">
+            <h3>TOP CUSTOMER</h3>
+            <ul className="list-group">
+              {listCustomer.map(item => {
+                let { name } = this.props.customers.find(
+                  customer => customer.id === item.idCus
+                );
+                return (
+                  <li key={item.idCus} className="list-group-item">
+                    <div className="row">
+                      <div className="col-md-9">{name}</div>
+                      <div className="col-md-3">$&nbsp;{item.total}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </main>
     );
