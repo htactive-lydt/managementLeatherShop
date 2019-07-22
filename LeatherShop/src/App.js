@@ -31,6 +31,8 @@ class AppBase extends React.Component {
       orders: [],
       user: null
     };
+    // .app.firebase.database
+    console.log(this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database.ServerValue.TIMESTAMP)
   }
 
   getTableCall = table => {
@@ -90,7 +92,7 @@ class AppBase extends React.Component {
     this.setState({
       isLoaded: false
     });
-    tableCall.on("value", snapshot => {
+    tableCall.orderByChild("createAt").startAt(1563763270415).on("value", snapshot => {
       const object = snapshot.val();
       if (object) {
         const objectList = Object.keys(object).map(key => ({
@@ -98,7 +100,7 @@ class AppBase extends React.Component {
           id: key
         }));
         this.setState({
-          [table]: objectList,
+          [table]: objectList.filter(item => !item.deleteAt).reverse(),
           isLoaded: true
         });
       } else {
@@ -111,7 +113,8 @@ class AppBase extends React.Component {
 
   addNew = (table, rowNew) => {
     let tableCall = this.getTableCall(table);
-    let key = tableCall.push(rowNew).getKey();
+    let createAt = this.props.firebase.db.INTERNAL.database.repo_.app.firebase_.database.ServerValue.TIMESTAMP;
+    let key = tableCall.push({...rowNew, createAt}).getKey();
     this.getData(table);
     return key;
   };
@@ -178,7 +181,13 @@ class AppBase extends React.Component {
             {isLoaded ? (
               <>
                 <Switch>
-                  <Route exact path="/" component={() => <Home orders={orders} products={products}/>} />
+                  <Route
+                    exact
+                    path="/"
+                    component={() => (
+                      <Home orders={orders} products={products} />
+                    )}
+                  />
                   <Route
                     path="/users"
                     component={() => (

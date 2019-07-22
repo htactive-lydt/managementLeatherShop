@@ -3,8 +3,6 @@ import "firebase/auth";
 import "firebase/database";
 import "firebase/storage";
 
-
-
 const config = {
   apiKey: "AIzaSyBYnoXyU73fab3_aFJm-I3d0cCVW1sPC6Y",
   authDomain: "projectdemo-e3434.firebaseapp.com",
@@ -23,22 +21,21 @@ export default class firebase {
     this.storage = app.storage();
   }
 
-  updateUsers = (id) => this.db.ref(`/users/${id}`);
+  updateUsers = id => this.db.ref(`/users/${id}`);
   users = () => this.db.ref("users");
 
-  updateCustomers = (id) => this.db.ref("customers/" + id);
+  updateCustomers = id => this.db.ref("customers/" + id);
   customers = () => this.db.ref("customers");
 
-  updateEmployees = (id) => this.db.ref(`/employees/${id}`);
+  updateEmployees = id => this.db.ref(`/employees/${id}`);
   employees = () => this.db.ref("employees");
 
-  updateCategories = (id) => this.db.ref(`/categories/${id}`);
+  updateCategories = id => this.db.ref(`/categories/${id}`);
   categories = () => this.db.ref("categories");
 
-  updateProducts = (id) => this.db.ref(`/products/${id}`);
+  updateProducts = id => this.db.ref(`/products/${id}`);
   products = () => this.db.ref("products");
 
-  updateOrders = (id) => this.db.ref(`/orders/${id}`);
+  updateOrders = id => this.db.ref(`/orders/${id}`);
   orders = () => this.db.ref("orders");
 }
-
