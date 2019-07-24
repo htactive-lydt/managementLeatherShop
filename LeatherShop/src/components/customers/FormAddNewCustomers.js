@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import validator from "validator";
 
 export default class FormAddNewCustomer extends Component {
   state = {
@@ -26,6 +27,11 @@ export default class FormAddNewCustomer extends Component {
     });
   };
 
+  validatePhoneNumber = number => {
+    const isValidPhoneNumber = validator.isMobilePhone(number);
+    return isValidPhoneNumber;
+  };
+
   checkValid = () => {
     const { name, birthday, address, phoneNumber } = this.state.newCustomer;
     let errors = [];
@@ -43,6 +49,11 @@ export default class FormAddNewCustomer extends Component {
     }
     if (!phoneNumber) {
       errors.push("Customer's phone number is required!");
+    } else if (
+      !this.validatePhoneNumber(phoneNumber) ||
+      phoneNumber.length !== 10
+    ) {
+      errors.push("Customer's phone number is invalid!");
     } else if (index !== -1) {
       errors.push("Customer's phone number is already exist!");
     }

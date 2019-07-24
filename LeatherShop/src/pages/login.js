@@ -22,8 +22,6 @@ class LoginBase extends Component {
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
-    console.log(value);
-    console.log(name);
     this.setState(prevState => ({
       ...prevState,
       newUser: {

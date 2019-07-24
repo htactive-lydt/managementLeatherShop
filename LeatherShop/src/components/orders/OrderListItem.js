@@ -29,7 +29,7 @@ export default function OrderListItem(props) {
   });
   return (
     <tr>
-      <td>{props.index + 1}</td>
+      <td>{props.index}</td>
       <td>{nameCustomer}</td>
       <td>{orderDate}</td>
       <td>{productsOrder}</td>

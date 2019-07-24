@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import validator from "validator";
 
 import ProductSearchItem from "./ProductSearchItem";
 import ProductChoosedList from "./ProductChoosedList";
@@ -127,7 +128,7 @@ export default class FormAddNewOrder extends Component {
     let searchValue = this.state.valueSearchProd;
     if (listProducts.length > 0) {
       let resultSearchProd = listProducts.filter(item => {
-        if (!item.deleteAt && searchValue) {
+        if (!item.deleteAt && searchValue && item.quantity > 0) {
           return (
             item.name.toLowerCase().search(searchValue.toLowerCase()) !== -1
           );
@@ -244,6 +245,11 @@ export default class FormAddNewOrder extends Component {
     });
   };
 
+  validatePhoneNumber = number => {
+    const isValidPhoneNumber = validator.isMobilePhone(number);
+    return isValidPhoneNumber;
+  };
+
   checkValidAddNewCus = () => {
     const { name, birthday, address, phoneNumber } = this.state;
     let index = this.props.customers.findIndex(
@@ -261,6 +267,11 @@ export default class FormAddNewOrder extends Component {
     }
     if (!phoneNumber) {
       errors.push("Customer's phone number is required!");
+    } else if (
+      !this.validatePhoneNumber(phoneNumber) ||
+      phoneNumber.length !== 10
+    ) {
+      errors.push("Customer's phone number is invalid!");
     } else if (index !== -1) {
       errors.push("Customer's phone number is already exist!");
     }
@@ -296,7 +307,9 @@ export default class FormAddNewOrder extends Component {
       let product = listProducts.find(product => product.id === item.id);
 
       product.quantity -= item.quantity;
-
+      let quantitySaled = product.quantitySaled || 0;
+      quantitySaled += item.quantity;
+      product.quantitySaled = quantitySaled;
       this.props.update("products", product);
       return "";
     });
