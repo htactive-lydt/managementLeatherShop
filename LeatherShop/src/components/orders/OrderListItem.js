@@ -1,9 +1,10 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 
 export default function OrderListItem(props) {
-  function deleteItem(){
+  function deleteItem() {
     props.deleteItem("orders", props.item);
-  };
+  }
 
   const { item, customers, listProducts } = props;
 
@@ -33,7 +34,13 @@ export default function OrderListItem(props) {
       <td>{nameCustomer}</td>
       <td>{orderDate}</td>
       <td>{productsOrder}</td>
-      <td>{amount}</td>
+      <td>
+        <NumberFormat
+          value={amount}
+          displayType="text"
+          thousandSeparator={true}
+        />đ
+      </td>
       <td>
         <button
           className="btn btn-danger"
