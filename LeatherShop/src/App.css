@@ -1305,3 +1305,8 @@ input:focus {
 .tile .list-group{
   margin-top: 25px;
 }
+
+.search-product-pr{
+  margin-top: 17px;
+  margin-left: -2px;
+}

@@ -99,6 +99,7 @@ class ProductListItemBase extends React.Component {
       priceOut,
       pricePromotion,
       quantity,
+      quantitySaled,
       deleteAt,
       key
     } = this.props.item;
@@ -135,7 +136,6 @@ class ProductListItemBase extends React.Component {
           </td>
           <td>
             <input
-              // type={`${isUpdating ? "image" : "image"}`}
               type="image"
               src={image}
               defaultValue={isUpdating ? image : ""}
@@ -199,6 +199,17 @@ class ProductListItemBase extends React.Component {
               className="form-control"
               name="quantity"
               defaultValue={quantity}
+              onChange={this.handleChange}
+              min="0"
+            />
+          </td>
+          <td width="50px">
+            <input
+              type="number"
+              className="form-control"
+              name="quantitySaled"
+
+              defaultValue={(quantitySaled===undefined)? 0 : quantitySaled}
               onChange={this.handleChange}
               min="0"
             />

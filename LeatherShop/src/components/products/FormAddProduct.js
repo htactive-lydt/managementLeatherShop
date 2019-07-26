@@ -19,7 +19,8 @@ class FormAddProductBase extends Component {
       url: "",
       progress: 0
     },
-    errors: []
+    errors: [],
+    valueSearch: ""
   };
 
   handleOpenForm = () => {
@@ -46,12 +47,9 @@ class FormAddProductBase extends Component {
       pricePromotion,
       quantity
     } = this.state.newProduct;
-    const {image} = this.state;
+    const { image } = this.state;
     let errors = [];
-    let date = new Date();
-    console.log("name", name);
-    let dateAddProduct =
-      date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+
     if (!name) {
       errors.push("Product's name is required");
     }
@@ -64,13 +62,11 @@ class FormAddProductBase extends Component {
     if (!dateAdd) {
       errors.push("Date add product is required");
     }
-    if (date < dateAddProduct) {
-      errors.push("Date add product must fdkjk");
-    }
+
     if (!description) {
       errors.push("Product's description is required");
     }
-  
+
     if (!priceIn) {
       errors.push("Product's price in is required");
     }
@@ -90,6 +86,25 @@ class FormAddProductBase extends Component {
       return 0;
     }
     return 1;
+  };
+
+  searchProduct = () => {
+    const { listProducts } = this.props;
+    let searchValue = this.state.valueSearchProd;
+    if (listProducts.length > 0) {
+      let resultSearchProd = listProducts.filter(item => {
+        if (!item.deleteAt && searchValue) {
+          return (
+            item.name.toLowerCase().search(searchValue.toLowerCase()) !== -1
+          );
+        }
+        return "";
+      });
+      this.setState({
+        searchValue,
+        resultSearchProd
+      });
+    }
   };
 
   addNewProduct = event => {
@@ -192,6 +207,7 @@ class FormAddProductBase extends Component {
                 ) : (
                   ""
                 )}
+
                 <div className="form-group col-md-6">
                   <label>Product's name</label>
                   <input

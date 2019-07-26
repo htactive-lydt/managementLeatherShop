@@ -29,20 +29,27 @@ export default class FormAddNewEmployee extends Component {
   checkValid = () => {
     const { name, address, email, idCard, salary } = this.state.newEmployee;
     let errors = [];
+    let index = this.props.employees.findIndex(item => item.idCard === idCard);
+    let index1 = this.props.employees.findIndex(item => item.email === email);
     if (!name) {
-      errors.push("Customer's name is required!");
+      errors.push("Employee's name is required!");
     }
     if (!email) {
-      errors.push("Customer's birthday is required!");
+      errors.push("Employee's email is required!");
+    } else if (index1 !== -1) {
+      errors.push("Employee's email is already exist!");
     }
+
     if (!address) {
-      errors.push("Customer's address is required!");
+      errors.push("Employee's address is required!");
     }
     if (!idCard) {
-      errors.push("Customer's phone number is required!");
+      errors.push("Employee's ID card is required!");
+    } else if (index !== -1) {
+      errors.push("Employee's card ID is already exist!");
     }
     if (!salary) {
-      errors.push("Customer's phone number is required!");
+      errors.push("Employee's salary is required!");
     }
     if (errors.length > 0) {
       this.setState({
