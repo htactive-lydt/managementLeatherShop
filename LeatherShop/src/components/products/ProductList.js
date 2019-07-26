@@ -95,7 +95,6 @@ class ProductList extends React.Component {
                   <th>DATE ADD</th>
                   <th>PRICE IN</th>
                   <th>PRICE OUT</th>
-                  <th>PRICE PROMOTION</th>
                   <th>QUANTITY</th>
                   <th>SALED QUANTITY</th>
                   <th>ACTION</th>

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { CanvasJSChart } from "../assets/canvasjs.react";
 import NumberFormat from "react-number-format";
 
+import Title from "../components/layouts/Title";
+
 export default class home extends Component {
   constructor(props) {
     super(props);
@@ -107,6 +109,7 @@ export default class home extends Component {
     };
     return (
       <main className="app-content">
+        <Title title="Dashboard" description="Revenue statistic and Overview" icon="fa fa-dashboard"/>
         <div className="row">
           <div className="col-md-6 col-lg-3">
             <div className="widget-small primary coloured-icon">

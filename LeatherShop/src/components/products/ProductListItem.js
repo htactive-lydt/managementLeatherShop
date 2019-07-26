@@ -168,13 +168,24 @@ class ProductListItemBase extends React.Component {
             />
           </td>
           <td>
-            <input
-              type="text"
-              className="form-control"
-              name="priceIn"
-              defaultValue={priceIn}
-              onChange={this.handleChange}
-            />
+          {isUpdating ? (
+              <input
+                type="text"
+                className="form-control"
+                name="priceIn"
+                defaultValue={priceIn}
+                onChange={this.handleChange}
+              />
+            ) : (
+              <>
+                <NumberFormat
+                  value={priceIn}
+                  displayType="text"
+                  thousandSeparator={true}
+                />
+                đ
+              </>
+            )}
           </td>
           <td>
             {isUpdating ? (
@@ -195,15 +206,6 @@ class ProductListItemBase extends React.Component {
                 đ
               </>
             )}
-          </td>
-          <td>
-            <input
-              type="text"
-              className="form-control"
-              name="pricePromotion"
-              defaultValue={pricePromotion}
-              onChange={this.handleChange}
-            />
           </td>
           <td width="50px">
             <input

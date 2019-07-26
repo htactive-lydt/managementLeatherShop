@@ -81,8 +81,10 @@ const LeftMenu = () => {
       <div className="app-sidebar__user">
         <img
           className="app-sidebar__user-avatar"
-          src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"
+          src="https://firebasestorage.googleapis.com/v0/b/projectdemo-e3434.appspot.com/o/images%2Favartar.jpg?alt=media&token=11675bd5-2465-4123-a5b6-90dee7be6d77"
           alt="User"
+          width="65px"
+          height="65px"
         />
         <div>
           <p className="app-sidebar__user-name">Trang Ly</p>

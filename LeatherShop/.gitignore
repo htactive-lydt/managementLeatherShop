@@ -3,6 +3,7 @@
 # dependencies
 vali-admin-master
 node_modules
+.firebase
 /.pnp
 .pnp.js
 
