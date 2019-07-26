@@ -87,7 +87,7 @@ export default class OrderList extends React.Component {
                   <th>ORDER DATE</th>
                   <th>PRODUCTS</th>
                   <th>AMOUNT</th>
-                  <th>CONTROL</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
               {orderList.length > 0 && <tbody>{orderList}</tbody>}

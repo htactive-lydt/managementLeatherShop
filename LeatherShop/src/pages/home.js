@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { CanvasJSChart } from "../assets/canvasjs.react";
+import NumberFormat from "react-number-format";
 
 export default class home extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ export default class home extends Component {
       year: event.target.value
     });
   };
-
 
   calRevenue = monthInput => {
     const { year: yearInput } = this.state;
@@ -77,6 +77,7 @@ export default class home extends Component {
 
   render() {
     let years = [2019, 2018, 2017, 2016, 2015, 2014];
+    const { customers, orders } = this.props;
 
     let listCustomer = this.calTotalAmountCus();
 
@@ -107,6 +108,52 @@ export default class home extends Component {
     return (
       <main className="app-content">
         <div className="row">
+          <div className="col-md-6 col-lg-3">
+            <div className="widget-small primary coloured-icon">
+              <i className="icon fa fa-users fa-3x" />
+              <div className="info">
+                <h4>Customers</h4>
+                <p>
+                  <b>{customers.filter(item => !item.deleteAt).length}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-lg-3">
+            <div className="widget-small info coloured-icon">
+              <i className="icon fa fa-thumbs-o-up fa-3x" />
+              <div className="info">
+                <h4>Likes</h4>
+                <p>
+                  <b>25</b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-lg-3">
+            <div className="widget-small warning coloured-icon">
+              <i className="icon fa fa-files-o fa-3x" />
+              <div className="info">
+                <h4>Orders</h4>
+                <p>
+                  <b>{orders.length}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-lg-3">
+            <div className="widget-small danger coloured-icon">
+              <i className="icon fa fa-star fa-3x" />
+              <div className="info">
+                <h4>Stars</h4>
+                <p>
+                  <b>500</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
           <div className="col-md-8">
             <div className="tile">
               <div className="col-md-3 panel-body">
@@ -133,7 +180,14 @@ export default class home extends Component {
                   <li key={item.idCus} className="list-group-item">
                     <div className="row">
                       <div className="col-md-9">{name}</div>
-                      <div className="col-md-3">$&nbsp;{item.total}</div>
+                      <div className="col-md-3">
+                        <NumberFormat
+                          value={item.total}
+                          displayType="text"
+                          thousandSeparator={true}
+                        />
+                        đ
+                      </div>
                     </div>
                   </li>
                 );

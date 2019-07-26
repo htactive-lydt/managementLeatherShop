@@ -1,5 +1,6 @@
 import React from "react";
 import { withFirebase } from "../Firebase";
+import NumberFormat from "react-number-format";
 
 class ProductListItemBase extends React.Component {
   constructor(props) {
@@ -157,7 +158,7 @@ class ProductListItemBase extends React.Component {
               ""
             )}
           </td>
-          <td >
+          <td>
             <input
               type="date"
               className="form-control"
@@ -176,13 +177,24 @@ class ProductListItemBase extends React.Component {
             />
           </td>
           <td>
-            <input
-              type="text"
-              className="form-control"
-              name="priceOut"
-              defaultValue={priceOut}
-              onChange={this.handleChange}
-            />
+            {isUpdating ? (
+              <input
+                type="text"
+                className="form-control"
+                name="priceOut"
+                defaultValue={priceOut}
+                onChange={this.handleChange}
+              />
+            ) : (
+              <>
+                <NumberFormat
+                  value={priceOut}
+                  displayType="text"
+                  thousandSeparator={true}
+                />
+                đ
+              </>
+            )}
           </td>
           <td>
             <input
@@ -208,8 +220,7 @@ class ProductListItemBase extends React.Component {
               type="number"
               className="form-control"
               name="quantitySaled"
-
-              defaultValue={(quantitySaled===undefined)? 0 : quantitySaled}
+              defaultValue={quantitySaled === undefined ? 0 : quantitySaled}
               onChange={this.handleChange}
               min="0"
             />

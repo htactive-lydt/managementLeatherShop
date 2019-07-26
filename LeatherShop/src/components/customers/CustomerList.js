@@ -33,7 +33,7 @@ export default function CustomerList(props) {
                 <th>ADDRESS</th>
                 <th>PHONE NUMBER</th>
                 <th>SCORE</th>
-                <th>CONTROL</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>{listItems}</tbody>

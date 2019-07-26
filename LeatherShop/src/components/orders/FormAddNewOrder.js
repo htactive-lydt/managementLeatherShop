@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import validator from "validator";
+import NumberFormat from "react-number-format";
 
 import ProductSearchItem from "./ProductSearchItem";
 import ProductChoosedList from "./ProductChoosedList";
@@ -318,7 +319,7 @@ export default class FormAddNewOrder extends Component {
   addNewOrder = () => {
     let carts = JSON.parse(localStorage.getItem("items")) || [];
     const { name, address, phoneNumber, birthday, isMember } = this.state;
-    let score = Math.floor(this.calTotalPrice() / 200000);
+    let score = Math.floor(this.calTotalPrice() / 500000);
     let date = new Date();
     let orderDate =
       date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
@@ -361,7 +362,7 @@ export default class FormAddNewOrder extends Component {
         const { customers } = this.props;
         const { idCus } = this.state;
         let customer = customers.find(item => item.id === idCus);
-        let newScore = customer.score + score;
+        let newScore = +customer.score + score;
         this.props.addNew("orders", {
           ...infoOrder,
           idCus
@@ -612,7 +613,15 @@ export default class FormAddNewOrder extends Component {
                       changeQuantity={this.changeQuantity}
                     />
                     <div className="offset-md-8">
-                      <h3>Total price: {totalPrice}</h3>
+                      <h3>
+                        Total price:{" "}
+                        <NumberFormat
+                          value={totalPrice}
+                          displayType="text"
+                          thousandSeparator={true}
+                        />
+                        đ
+                      </h3>
                     </div>
                     <button className="btn btn-form" onClick={this.backStep}>
                       BACK

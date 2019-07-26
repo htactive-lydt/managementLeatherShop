@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 
 export default function ProductChoosedItem(props) {
   const { name, quantity, priceOut, image } = props.item;
@@ -30,7 +31,7 @@ export default function ProductChoosedItem(props) {
       <div className="row">
         <div className="col-md-5">
           <p>{name}</p>
-          {step === 2 ? <img src={image} alt="Product" width="100px"/> : ""}
+          {step === 2 ? <img src={image} alt="Product" width="100px" /> : ""}
         </div>
         <div>
           <button
@@ -55,7 +56,15 @@ export default function ProductChoosedItem(props) {
           </button>
         </div>
         <div className="col-md-3">
-          Price: <span>{priceOut * quantity}</span>
+          Price:{" "}
+          <span>
+            <NumberFormat
+              value={priceOut * quantity}
+              displayType="text"
+              thousandSeparator={true}
+            />
+            đ
+          </span>
         </div>
         <div>
           <button className="btn btn-danger" onClick={deleteCart}>
