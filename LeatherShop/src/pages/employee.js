@@ -7,15 +7,17 @@ const Employees = props => {
   return (
     <>
       <main className="app-content">
-        <div className="container">
-          <FormAddNewEmployee addNew={addNew} update={update} />
-          <EmployeeList
-            employees={employees}
-            update={update}
-            deleteItem={deleteItem}
-            undoDelete={undoDelete}
-          />
-        </div>
+        <FormAddNewEmployee
+          addNew={addNew}
+          update={update}
+          employees={employees}
+        />
+        <EmployeeList
+          employees={employees}
+          update={update}
+          deleteItem={deleteItem}
+          undoDelete={undoDelete}
+        />
       </main>
     </>
   );
